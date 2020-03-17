@@ -45,18 +45,6 @@
     <ClInclude Include="include\Selection\Selector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\LokiAllocators.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\Test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\Typelists.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\TypeTraits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Phrase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,9 +111,6 @@
     <ClInclude Include="include\Fitness\RuleExtractors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\LokiFunctor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\GenericFunctor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,9 +162,6 @@
     <ClInclude Include="include\Fitness\RuleTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TemplateGarbage\VariadicUnion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp">
@@ -207,9 +189,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Selection\Selector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TemplateGarbage\LokiAllocators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\glad.c">

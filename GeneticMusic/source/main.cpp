@@ -16,19 +16,7 @@
 #include "GAController.h"
 #include "GAControllerInterfaces.h"
 
-#include "TemplateGarbage/VariadicUnion.h"
-
-//#define TemplateTest
-
 int main(int argc, char** argv) {
-
-#ifdef TemplateTest
-
-	Variadic<X, Y, Z> myVariadic;
-
-	return 0;
-
-#endif
 
 	Genetics::GeneticAlgorithmController geneticAlgorithm;
 	Genetics::UISystem GUI;
