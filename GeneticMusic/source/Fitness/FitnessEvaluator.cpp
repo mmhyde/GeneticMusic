@@ -108,6 +108,8 @@ namespace Genetics {
 		}
 	}
 
+#define FITNESS_EPSILON 0.001f
+
 	void AutomaticFitness::evaluate(Phrase* phrase) {
 
 		ExtractorBase* pitchExtractor = m_extractorList[ext_Pitch];
@@ -116,6 +118,9 @@ namespace Genetics {
 		//float fitness = m_heuristic.AnalyzePhrase(phrase);
 		if (fitness > 1.0f || std::isnan(fitness)) {
 			std::cout << "problem phrase discovered" << std::endl;
+		}
+		if (fitness < FITNESS_EPSILON) {
+			fitness = FITNESS_EPSILON;
 		}
 
 		phrase->_fitnessValue = fitness;

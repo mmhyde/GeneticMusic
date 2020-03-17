@@ -37,7 +37,9 @@ namespace Genetics {
 
 	RuleTable::~RuleTable() {
 
-		delete[] m_ruleStorage;
+		char* ruleMemory = reinterpret_cast<char*>(m_ruleStorage);
+		delete[] ruleMemory;
+		m_ruleStorage = nullptr;
 	}
 
 	RuleID RuleTable::constructRule(RuleType type, std::shared_ptr<Function> ruleFunc, float weight) {

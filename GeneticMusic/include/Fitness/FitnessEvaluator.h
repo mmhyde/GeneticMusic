@@ -13,8 +13,8 @@ namespace Genetics {
 	struct ManualFitness {
 
 	protected:
-
-		virtual ~ManualFitness() { }
+		ManualFitness() = default;
+		virtual ~ManualFitness() = default;
 
 		void evaluate(Phrase* phrase);
 	};
@@ -28,7 +28,6 @@ namespace Genetics {
 		void evaluate(Phrase* phrase);
 
 	private:
-		
 		std::vector<ExtractorBase*> m_extractorList;
 	};
 
