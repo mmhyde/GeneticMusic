@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{1BF49A52-C04F-492E-BA3B-C5D92BBE3F93}</ProjectGuid>
+    <RootNamespace>GeneticMusic</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(SolutionDir)external\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <OutDir>$(SolutionDir)Build\$(Configuration)-$(Platform)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LibraryPath>$(SolutionDir)external\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <OutDir>$(SolutionDir)Build\$(Configuration)-$(Platform)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)-$(Platform)\</OutDir>
+    <LibraryPath>$(SolutionDir)external\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)-$(Platform)\</OutDir>
+    <LibraryPath>$(SolutionDir)external\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)Dependencies\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName)
+xcopy /y $(SolutionDir)Dependencies\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName)
+
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)external\include\;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glfw3.lib;portaudio_x64.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+
+xcopy /y $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName).exe $(SolutionDir)Standalone\
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone\
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)Dependencies\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName)
+xcopy /y $(SolutionDir)Dependencies\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName)
+
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)include\;$(SolutionDir)external\include\;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;portaudio_x64.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+
+xcopy /y $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName).exe $(SolutionDir)Standalone\
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone\
+xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\AudioPlayback\AudioDefinitions.h" />
+    <ClInclude Include="include\AudioPlayback\AudioEngine.h" />
+    <ClInclude Include="include\AudioPlayback\SynthesizerBase.h" />
+    <ClInclude Include="include\Breeding\Breeder.h" />
+    <ClInclude Include="include\FileIO\FitnessFiles.h" />
+    <ClInclude Include="include\Fitness\RuleTable.h" />
+    <ClInclude Include="include\Fitness\RuleList.h" />
+    <ClInclude Include="include\Fitness\RuleManager.h" />
+    <ClInclude Include="include\Fitness\RuleTypes.h" />
+    <ClInclude Include="include\GAController.h" />
+    <ClInclude Include="include\GAControllerInterfaces.h" />
+    <ClInclude Include="include\GenericFunctor.h" />
+    <ClInclude Include="include\FileIO\FileDefinitions.h" />
+    <ClInclude Include="include\FileIO\FileManager.h" />
+    <ClInclude Include="include\FileIO\MIDIFiles.h" />
+    <ClInclude Include="include\FileIO\WAVFiles.h" />
+    <ClInclude Include="include\Fitness\FitnessEvaluator.h" />
+    <ClInclude Include="include\Fitness\FunctionBuilder.h" />
+    <ClInclude Include="include\Fitness\FuzzyFunctions.h" />
+    <ClInclude Include="include\Fitness\HeuristicBuilder.h" />
+    <ClInclude Include="include\Fitness\RuleBuilder.h" />
+    <ClInclude Include="include\Fitness\RuleExtractors.h" />
+    <ClInclude Include="include\Generation\PopulationGenerator.h" />
+    <ClInclude Include="include\Graphics\AlgorithmExecutionWindow.h" />
+    <ClInclude Include="include\Graphics\ImGuiHelpers.h" />
+    <ClInclude Include="include\Graphics\PhraseListViewer.h" />
+    <ClInclude Include="include\Graphics\PhrasePlaybackWindow.h" />
+    <ClInclude Include="include\Graphics\PianoRoll.h" />
+    <ClInclude Include="include\Graphics\RuleEditor.h" />
+    <ClInclude Include="include\Graphics\UIElementBuilder.h" />
+    <ClInclude Include="include\Graphics\UIElements.h" />
+    <ClInclude Include="include\Graphics\UISystem.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="include\Mutation\Mutator.h" />
+    <ClInclude Include="include\Phrase.h" />
+    <ClInclude Include="include\GADefaultConfig.h" />
+    <ClInclude Include="include\PhrasePool.h" />
+    <ClInclude Include="include\PolicyDefinitions.h" />
+    <ClInclude Include="include\PoolAllocator.h" />
+    <ClInclude Include="include\Selection\Selector.h" />
+    <ClInclude Include="include\TemplateGarbage\LokiFunctor.h" />
+    <ClInclude Include="include\TemplateGarbage\LokiAllocators.h" />
+    <ClInclude Include="include\TemplateGarbage\Test.h" />
+    <ClInclude Include="include\TemplateGarbage\Typelists.h" />
+    <ClInclude Include="include\TemplateGarbage\TypeTraits.h" />
+    <ClInclude Include="include\TemplateGarbage\VariadicUnion.h" />
+    <ClInclude Include="include\Util.h" />
+    <ClInclude Include="include\Utility\GUIDGenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp" />
+    <ClCompile Include="source\AudioPlayback\AudioEngine.cpp" />
+    <ClCompile Include="source\AudioPlayback\SynthesizerBase.cpp" />
+    <ClCompile Include="source\Breeding\Breeder.cpp" />
+    <ClCompile Include="source\FIleIO\FileManager.cpp" />
+    <ClCompile Include="source\FIleIO\FitnessFiles.cpp" />
+    <ClCompile Include="source\FIleIO\MIDIFiles.cpp" />
+    <ClCompile Include="source\Fitness\FitnessEvaluator.cpp" />
+    <ClCompile Include="source\Fitness\FunctionBuilder.cpp" />
+    <ClCompile Include="source\Fitness\FuzzyFunctions.cpp" />
+    <ClCompile Include="source\Fitness\RuleBuilder.cpp" />
+    <ClCompile Include="source\Fitness\RuleExtractors.cpp" />
+    <ClCompile Include="source\Fitness\RuleManager.cpp" />
+    <ClCompile Include="source\Fitness\RuleTable.cpp" />
+    <ClCompile Include="source\GAController.cpp" />
+    <ClCompile Include="source\GAControllerInterfaces.cpp" />
+    <ClCompile Include="source\Generation\PopulationGenerator.cpp" />
+    <ClCompile Include="source\glad.c" />
+    <ClCompile Include="source\Graphics\AlgorithmExecutionWindow.cpp" />
+    <ClCompile Include="source\Graphics\PhraseListViewer.cpp" />
+    <ClCompile Include="source\Graphics\PhrasePlaybackWindow.cpp" />
+    <ClCompile Include="source\Graphics\PianoRoll.cpp" />
+    <ClCompile Include="source\Graphics\RuleEditor.cpp" />
+    <ClCompile Include="source\Graphics\UIElementBuilder.cpp" />
+    <ClCompile Include="source\Graphics\UISystem.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Mutation\Mutator.cpp" />
+    <ClCompile Include="source\PhrasePool.cpp" />
+    <ClCompile Include="source\Selection\Selector.cpp" />
+    <ClCompile Include="source\TemplateGarbage\LokiAllocators.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

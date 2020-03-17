@@ -1,0 +1,87 @@
+#pragma once
+
+#include "Generation/PopulationGenerator.h"
+#include "PolicyDefinitions.h"
+
+#include "AudioPlayback/AudioEngine.h"
+
+#include <vector>
+#include <cstdint>
+
+namespace Genetics {
+
+	class SynthesizerBase;
+
+	struct Phrase;
+	struct MeterInfo;
+
+	class GeneticAlgorithmController {
+
+	public:
+		GeneticAlgorithmController();
+		~GeneticAlgorithmController();
+
+		GeneticAlgorithmController(const GeneticAlgorithmController& rhs) = delete;
+		GeneticAlgorithmController& operator=(const GeneticAlgorithmController& rhs) = delete;
+		
+		// State Management Functions //
+		
+		void initializeAlgorithm();
+		void run();
+		void updateAudioEngine();
+		void shutdownAlgorithm();
+
+		void setMeterInfoStruct(const MeterInfo& meterData);
+		void setPhrasePoolSize(uint32_t populationSize);
+		
+		void setPhraseMeasureCount(uint32_t measureCount);
+		void setPhraseSmallestSubdivision(uint32_t subDivision);
+
+		void setIterationCount(uint32_t iterations);
+
+		// Phrase Manipulation Functions //
+
+		void setActivePhrase(uint32_t phraseID);
+
+		uint32_t getActivePhraseID() const;
+		Phrase* getActivePhrase() const;
+
+		const std::vector<Phrase*>& getPhraseList() const;
+
+		void exportPhraseToMIDI(const std::string& filepath) const;
+		void importMIDIToPhrase(const std::string& filepath);
+		
+		// Audio Playback Functions //
+
+		void playCurrentlySelectedPhrase();
+		void pauseCurrentlySelectedPhrase();
+		void stopCurrentlySelectedPhrase();
+
+		void setPlaybackSynthesizer(SynthesizerBase* synth);
+
+	private:
+		void resetPopulation();
+
+		// Phrase and population
+		PopulationGenerator m_populationGen;
+		PhrasePool* m_phrasePool;
+		Phrase* m_activePhrase;
+
+		int16_t m_iterationsPerStep;
+		uint32_t m_totalGenerations;
+
+		// Audio playback
+		SynthesizerBase* m_activeSynth;
+		AudioEngine m_audioEngine;
+
+		// Algorithm steps
+		
+		SelectionType m_selection;
+		BreederType m_breeding;
+		Mutator m_mutation;
+		FitnessType m_fitness;
+		
+	};
+
+
+} // namespace Genetics
