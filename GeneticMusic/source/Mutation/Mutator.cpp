@@ -13,7 +13,7 @@ namespace Genetics {
 	m_mutationWeights.push_back(weight); \
 	m_mutationPool.push_back(&Mutator::mutation)
 
-#define DEBUG_OUTPUT
+//#define DEBUG_OUTPUT
 
 	Mutator::Mutator()
 	{
