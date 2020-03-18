@@ -116,9 +116,11 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone</Command>
       <AdditionalDependencies>glfw3.lib;portaudio_x64.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+      <Command>if not exist $(SolutionDir)Build\$(Configuration)-$(Platform)\ mkdir $(SolutionDir)Build\$(Configuration)-$(Platform)\
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
 xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
 
+if not exist $(SolutionDir)Standalone\ mkdir $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName).exe $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command>
@@ -163,9 +165,11 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone</Command>
       <AdditionalDependencies>glfw3.lib;portaudio_x64.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
+      <Command>if not exist $(SolutionDir)Build\$(Configuration)-$(Platform)\ mkdir $(SolutionDir)Build\$(Configuration)-$(Platform)\
+xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
 xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Build\$(Configuration)-$(Platform)\
 
+if not exist $(SolutionDir)Standalone\ mkdir $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)Build\$(Configuration)-$(Platform)\$(ProjectName).exe $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)external\lib\portaudio_x64.dll $(SolutionDir)Standalone\
 xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command>
