@@ -110,40 +110,6 @@ namespace Genetics {
 		PtrToMemFn _memberFunction;
 	};
 
-	// Class to help extend the functionality of generic functor class //
-
-	/*
-	template <class FunctorType, typename BoundType, typename... Args>
-	class BinderFirst 
-		: public FunctorImpl<typename FunctorType::Result, Args...> {
-
-		typedef typename FunctorType::Result ResultType;
-
-	public:
-
-		BinderFirst(FunctorType functor, BoundType value)
-			: _functor(functor), _boundValue(value) {
-
-		}
-
-		ResultType operator()(Args... args) override {
-
-			return _functor(_boundValue, std::forward<Args>(args)...);
-		}
-
-		FunctorImpl<ResultType, Args...>* clone() const override {
-
-			return new BinderFirst<FunctorType, BoundType, Args...>(_functor, _boundValue);
-		}
-
-	private:
-		FunctorType _functor;
-		BoundType _boundValue;
-	};
-	*/
-
-	// Template helper functions to use classes that extend Generic functor //
-
 	// Functor class function definitions //
 
 	template <typename ResultType, typename... Args>
@@ -200,23 +166,4 @@ namespace Genetics {
 		_spImpl = std::unique_ptr<Impl>(new MemFnHandler(obj, fn));
 	}
 
-	/*
-	template <typename ResultType, typename... Args>
-	template <typename BoundType>
-	void Functor<ResultType, Args...>::BindFirst(BoundType bindValue) {
-
-		//static_assert(Conversion<BoundType, typename PeelFirst<Args>::FirstType>::exists, "Type of boundValue cannot convert to first template parameter");
-
-		// On construction this creates a copy of the functor current functors pImpl object
-		// inside the BinderFirst Implementation. This means we can replace the current Impl
-		// with the one just allocated safely since the old one is contained inside this one
-		Impl* ptrImpl = new BinderFirst<Functor<ResultType, Args...>, BoundType, Args...>(*this, bindValue);
-		_spImpl = std::unique_ptr<Impl>(ptrImpl);
-	}
-	*/
-
-	// Functor Impl function definitions //
-
-	// Handler function definitions //
-
-}
+} // namespace Genetics

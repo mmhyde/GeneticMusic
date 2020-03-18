@@ -24,6 +24,7 @@ namespace Genetics
 		m_outputSynth(440.0f, rate, m_envelopeArchetype)
 	{
 	}
+
 #pragma warning(pop)
 
 	SynthesizerBase::~SynthesizerBase()

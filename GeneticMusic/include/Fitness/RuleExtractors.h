@@ -39,8 +39,6 @@ namespace Genetics {
 		float process(Phrase* subject) const override;
 		void setRuleWeight(short id, float weight) override;
 
-		__inline static short getType() { return ext_Pitch; }
-
 	private:
 		const RuleList<PitchRule> m_pitchRules;
 	};
@@ -53,8 +51,6 @@ namespace Genetics {
 
 		float process(Phrase* subject) const override;
 		void setRuleWeight(short id, float weight) override;
-
-		__inline static short getType() { return ext_Rhythm; }
 		
 	private:
 		const RuleList<RhythmRule> m_rhythmRules;
@@ -70,10 +66,8 @@ namespace Genetics {
 		float process(Phrase* subject) override;
 		void setRuleWeight(short id, float weight) override;
 
-		__inline static short getType() { return ext_Interval; }
-
 	private:
-		const std::vector<IntervalRule>& m_ruleList;
+		const RuleList<IntervalRule> m_intervalRules;
 	};
 
 	class MeasureExtractor : public ExtractorBase {
@@ -85,10 +79,8 @@ namespace Genetics {
 		float process(Phrase* subject) override;
 		void setRuleWeight(short id, float weight) override;
 
-		__inline static short getType() { return ext_Measure; }
-
 	private:
-		std::vector<MeasureRule*> m_ruleList;
+		const RuleList<MeasureRule> m_measureRules;
 	};
 
 	*/

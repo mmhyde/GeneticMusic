@@ -105,6 +105,7 @@ namespace Genetics {
 		const uint16_t m_maxRules;
 	};
 
+	// Hide the implementation away to make it apparent it's not for public use
 	namespace RuleConstructImpl {
 
 		typedef void(*ConstructRule)(void* addr, std::shared_ptr<Function>, float);

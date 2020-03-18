@@ -23,11 +23,11 @@ namespace Genetics {
 		// We don't want functions getting created with duplicate IDs or names
 		Function(const Function& rhs) = delete;
 		
-		// Move constructor is OK too because it's stealing from the other object
-		Function(Function&& rhs);
-
 		// However assigning to an already named and ID'd function is OK
 		Function& operator=(const Function& rhs);
+
+		// Move constructor is OK too because it's stealing from the other object
+		Function(Function&& rhs);
 
 		~Function();
 

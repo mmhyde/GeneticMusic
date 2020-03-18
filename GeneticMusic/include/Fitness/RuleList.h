@@ -53,7 +53,7 @@ namespace Genetics {
 	template<typename InputType>
 	float RuleList<Rule>::evaluateAll(InputType type, uint32_t inputLen) const {
 
-		if (*m_numRules == 0) { return 0.5f; }
+		if (*m_numRules == 0 || m_ruleType == nullptr) { return 0.5f; }
 
 		float total = 0.0f;
 		for (uint16_t i = 0; i < *m_numRules; ++i) {

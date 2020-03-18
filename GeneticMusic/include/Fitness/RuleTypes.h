@@ -21,10 +21,10 @@ namespace Genetics {
 	class Function;
 	class ModifierBase;
 
-#define INVALID_RULE_ID UINT16_MAX
-#define NO_MODIFIER_ID 0
-#define DEFAULT_FUNCTION_ID 0
-#define RULES_PER_TYPE 16
+	constexpr uint32_t INVALID_RULE_ID = UINT16_MAX;
+	constexpr ModifierID NO_MODIFIER_ID = 0;
+	constexpr FunctionID DEFAULT_FUNCTION_ID = 0;
+	constexpr uint16_t RULES_PER_TYPE = 16;
 
 	struct RuleInfo {
 

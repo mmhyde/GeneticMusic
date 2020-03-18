@@ -10,6 +10,7 @@ namespace Genetics {
 	class PhrasePool;
 	class ExtractorBase;
 
+	// Policy classes for how fitness should occur
 	struct ManualFitness {
 
 	protected:
@@ -31,6 +32,7 @@ namespace Genetics {
 		std::vector<ExtractorBase*> m_extractorList;
 	};
 
+	// Policy host, main object interacted with during algorithm operation
 	template <class FitnessPolicy = ManualFitness>
 	class FitnessEvaluator : public FitnessPolicy {
 

@@ -10,10 +10,6 @@ namespace Genetics {
 		virtual ~UIElement() {}
 
 		virtual void render() = 0;
-
-	private:
-
-
 	};
 
 

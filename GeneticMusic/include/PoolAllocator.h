@@ -6,8 +6,8 @@
 namespace Genetics {
 
 	template <typename T>
-	class PoolAllocator
-	{
+	class PoolAllocator {
+
 	public:
 		PoolAllocator(unsigned maxObjects);
 		~PoolAllocator();
@@ -25,8 +25,8 @@ namespace Genetics {
 	private:
 		struct ObjNode {
 			ObjNode() 
-				: m_memoryAddr(nullptr), m_next(nullptr) 
-			{ 
+				: m_memoryAddr(nullptr), m_next(nullptr) {
+
 			}
 
 			char* m_memoryAddr;
@@ -42,8 +42,8 @@ namespace Genetics {
 
 	template <typename T>
 	PoolAllocator<T>::PoolAllocator(unsigned maxObjects)
-		: m_maxObjects(maxObjects), m_allocList(nullptr)
-	{
+		: m_maxObjects(maxObjects), m_allocList(nullptr) {
+
 		// Allocate all the memory we need for the pool upfront and 0 it out
 		m_objectArray = new char[maxObjects * sizeof(T)];
 		std::memset(m_objectArray, 0, sizeof(T) * m_maxObjects);
@@ -65,8 +65,8 @@ namespace Genetics {
 	}
 
 	template <typename T>
-	PoolAllocator<T>::~PoolAllocator()
-	{
+	PoolAllocator<T>::~PoolAllocator() {
+
 		std::memset(m_objectArray, 0, sizeof(T) * m_maxObjects);
 
 		// While there are allocated elements in the free list
@@ -103,8 +103,8 @@ namespace Genetics {
 	}
 
 	template <typename T>
-	T* PoolAllocator<T>::Alloc()
-	{
+	T* PoolAllocator<T>::Alloc() {
+
 		T* newObject = nullptr;
 
 		// Check if we have any space for allocations
@@ -132,8 +132,8 @@ namespace Genetics {
 	}
 
 	template <typename T>
-	void PoolAllocator<T>::Free(T* object)
-	{
+	void PoolAllocator<T>::Free(T* object) {
+
 		// Check that the object exists
 		if (object)
 		{
@@ -186,16 +186,13 @@ namespace Genetics {
 	}
 
 	template <typename T>
-	void PoolAllocator<T>::SetNewPoolSize(unsigned newPoolSize)
-	{
+	void PoolAllocator<T>::SetNewPoolSize(unsigned newPoolSize) {
+
 		Clear();
-
-
 	}
 
 	template <typename T>
-	void PoolAllocator<T>::Clear()
-	{
+	void PoolAllocator<T>::Clear() {
 
 	}
 

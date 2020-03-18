@@ -48,7 +48,6 @@ namespace Genetics {
 		void removeFunction(const FunctionID& functionID);
 
 		// Modify Rules
-		RuleID changeType(const RuleID& ruleID, RuleType   ruleType);
 		void setModifier(const RuleID& ruleID, ModifierID modifierType);
 		void setFunction(const RuleID& ruleID, FunctionID functionType);
 		void setRuleWeight(const RuleID& ruleID, float weight = 1.0f);

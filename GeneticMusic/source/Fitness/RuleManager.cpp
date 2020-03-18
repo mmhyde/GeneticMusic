@@ -57,7 +57,6 @@ namespace Genetics {
 		extractorVec[ext_Rhythm]   = new RhythmExtractor(m_ruleTable.getRuleList<RhythmRule>(ext_Pitch));
 	}
 
-
 	// Add / Remove rules and rule components from the manager
 	RuleID RuleManager::createRule(RuleType type, FunctionID functionID) {
 
@@ -120,14 +119,7 @@ namespace Genetics {
 		m_functionDatabase.erase(m_functionDatabase.begin() + functionID);
 	}
 
-
 	// Modify Rules
-	RuleID RuleManager::changeType(const RuleID& ruleID, RuleType ruleType) {
-		// Im not convinced this function needs to exist.
-		// It does a very dangerous thing: invalidating every handle to the rule
-		// That kinda risk just isn't something I want to add on a whim
-		return 0;
-	}
 
 	void RuleManager::setModifier(const RuleID& ruleID, ModifierID modifierType) {
 
@@ -136,34 +128,7 @@ namespace Genetics {
 			return;
 		}
 
-		/*
-		RuleType type  = hashIDToType(ruleID);
-		uint16_t index = hashIDToIndex(ruleID);
-		ModifierBase* mod = m_modifierDatabase[modifierType];
 
-		switch (type) {
-
-		case ext_Pitch:
-			if (WITHIN_RANGE(index, m_pitchRules) == false) {
-				std::cout << "Invalid rule ID" << std::endl;
-				return;
-			}
-			// Set the new modifier pointer for the rule
-			m_pitchRules[index].m_modifier = mod;
-			// Update the correct rule info object with the correct modifier ID
-			for (RuleInfo& info : m_ruleInfoDatabase) {
-				if (info.ruleID == ruleID) {
-					info.modID = modifierType;
-					break;
-				}
-			}
-			break;
-
-		default:
-
-			break;
-		}
-		*/
 	}
 
 	void RuleManager::setFunction(const RuleID& ruleID, FunctionID functionType) {

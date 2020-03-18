@@ -214,41 +214,6 @@ namespace Genetics {
 		//std::sort(m_vertexList.begin(), m_vertexList.end(), VertexSorter());
 	}
 
-	/*void Function::setVertexOpen(short vertX, float vertY, bool vertexOpen) {
-
-		VertexIterator position = findVertex(m_vertexList.begin(), m_vertexList.end(), vertX);
-		if (position != m_vertexList.end()) {
-
-			// Check for uniqueness
-			bool yMatches;
-
-			VertexIterator nextVert = position + 1;
-			if (nextVert != m_vertexList.end() && nextVert->_xPos == position->_xPos) {
-				
-				// Two vertices share an xValue, set the second one to be opposite of the
-				// closed status of the first
-				yMatches = (nextVert->_yPos == vertY);
-				nextVert->_closed = XOR(yMatches, vertexOpen);
-
-				// Check for a third (there can be a max of 3 sharing a particular x coordinate)
-				VertexIterator thirdVert = nextVert + 1;
-				if (thirdVert != m_vertexList.end() && thirdVert->_xPos == position->_xPos) {
-					
-					// All three vertices share an xValue, set the third one to be the opposite
-					// of the closed status of the first one
-					yMatches = (thirdVert->_yPos == vertY);
-					thirdVert->_closed = XOR(yMatches, vertexOpen);
-				}
-			}
-			
-			// Set the open status of the vertex
-			yMatches = (position->_yPos == vertY);
-			position->_closed = XOR(yMatches, vertexOpen);
-		}
-	}
-	*/
-
-
 	// Access elements //
 
 	const std::vector<Vertex>& Function::getVertices() const {
