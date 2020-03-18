@@ -32,15 +32,15 @@ namespace Genetics {
 		}
 
 		// Pause button
-		if (ImGui::Button("Pause", ImVec2((buttonDim.x-xPaddingOffset) / 2.0f, 0.0f))) {
-
-			m_interface->m_pauseActivePhrase();
-		}
-
-		ImGui::SameLine();
+		//if (ImGui::Button("Pause", ImVec2((buttonDim.x-xPaddingOffset) / 2.0f, 0.0f))) {
+		//
+		//	m_interface->m_pauseActivePhrase();
+		//}
+		//
+		//ImGui::SameLine();
 
 		// Stop button
-		if (ImGui::Button("Stop", ImVec2((buttonDim.x-xPaddingOffset) / 2.0f, 0.0f))) {
+		if (ImGui::Button("Stop", buttonDim)) {
 
 			m_interface->m_stopActivePhrase();
 		}

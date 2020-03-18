@@ -1,4 +1,7 @@
+// Morgen Hyde
 #pragma once
+
+#include "ActiveSound.h"
 
 namespace Genetics {
 
@@ -30,15 +33,10 @@ namespace Genetics {
 
 		void StopAll();
 
-
 	private:
-
-		float* m_outputData;
-		float* m_outputPosition;
-		unsigned m_outputBufferLen;
-		bool m_done;
 		
 		SynthesizerBase* m_outputSynth;
+		ActiveSound m_activeSound;
 		PaStream m_outStream;
 	};
 

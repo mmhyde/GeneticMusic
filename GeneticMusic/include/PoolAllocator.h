@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+#include <cstring>
 
 namespace Genetics {
 

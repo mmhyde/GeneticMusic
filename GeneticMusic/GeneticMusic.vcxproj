@@ -172,6 +172,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AudioPlayback\ActiveSound.h" />
     <ClInclude Include="include\AudioPlayback\AudioDefinitions.h" />
     <ClInclude Include="include\AudioPlayback\AudioEngine.h" />
     <ClInclude Include="include\AudioPlayback\SynthesizerBase.h" />
@@ -190,8 +191,6 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClInclude Include="include\FileIO\WAVFiles.h" />
     <ClInclude Include="include\Fitness\FitnessEvaluator.h" />
     <ClInclude Include="include\Fitness\FunctionBuilder.h" />
-    <ClInclude Include="include\Fitness\FuzzyFunctions.h" />
-    <ClInclude Include="include\Fitness\HeuristicBuilder.h" />
     <ClInclude Include="include\Fitness\RuleBuilder.h" />
     <ClInclude Include="include\Fitness\RuleExtractors.h" />
     <ClInclude Include="include\Generation\PopulationGenerator.h" />
@@ -229,6 +228,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="source\AudioPlayback\ActiveSound.cpp" />
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp" />
     <ClCompile Include="source\AudioPlayback\AudioEngine.cpp" />
     <ClCompile Include="source\AudioPlayback\SynthesizerBase.cpp" />
@@ -238,7 +238,6 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClCompile Include="source\FIleIO\MIDIFiles.cpp" />
     <ClCompile Include="source\Fitness\FitnessEvaluator.cpp" />
     <ClCompile Include="source\Fitness\FunctionBuilder.cpp" />
-    <ClCompile Include="source\Fitness\FuzzyFunctions.cpp" />
     <ClCompile Include="source\Fitness\RuleBuilder.cpp" />
     <ClCompile Include="source\Fitness\RuleExtractors.cpp" />
     <ClCompile Include="source\Fitness\RuleManager.cpp" />

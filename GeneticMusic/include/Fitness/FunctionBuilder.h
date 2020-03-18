@@ -4,6 +4,7 @@
 #include "RuleTypes.h"
 
 #include <vector>
+#include <string>
 
 namespace Genetics {
 

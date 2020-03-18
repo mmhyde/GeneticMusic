@@ -475,7 +475,7 @@ namespace Genetics {
 	const ImColor vertexColor(200, 200, 0);
 	const ImColor segmentColor(76, 0, 153);
 
-	const ImVec2 gridWindowPadding(30.0f, 20.0f);
+	const ImVec2 gridWindowPadding(40.0f, 40.0f);
 
 	constexpr float scrollingScalar = 0.5f;
 	constexpr float heightInterval = 0.1f;
@@ -487,7 +487,7 @@ namespace Genetics {
 		std::shared_ptr<Function> function = m_interface->m_getFunctionObject(activeRule.funcID);
 
 		m_editor.setEditable(activeRule.funcID != DEFAULT_FUNCTION_ID);
-		m_editor.Draw(function);
+		m_editor.Draw(function, hashIDToType(m_activeRule));
 	}
 
 	constexpr float gridMin = 0.0f;
@@ -506,11 +506,11 @@ namespace Genetics {
 
 	}
 
-	void FunctionEditor::Draw(std::shared_ptr<Function> function) {
+	void FunctionEditor::Draw(std::shared_ptr<Function> function, RuleType type) {
 
 		UpdateWindowDimensions(function);
 
-		DrawGridAxes();
+		DrawGridAxes(type);
 
 		DrawGridLines();
 
@@ -660,7 +660,7 @@ namespace Genetics {
 		m_lastX = xCoord;
 	}
 
-	void FunctionEditor::DrawGridAxes() {
+	void FunctionEditor::DrawGridAxes(RuleType type) {
 
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
 
@@ -670,6 +670,25 @@ namespace Genetics {
 
 		// Draw the x axis along the bottom of the region
 		drawList->AddLine(bottomLeft, m_bottomRight, axisColor, 2.0f);
+
+		float midPoint = m_bottomRight.x - bottomLeft.x - 100.0f;
+		midPoint = midPoint / 2.0f;
+
+		ImVec2 center(bottomLeft.x + midPoint, m_bottomRight.y + ImGui::GetTextLineHeight() * 2.25f);
+		
+		switch (type + 1) {
+
+		case ext_Pitch:
+			drawList->AddText(center, IM_COL32_WHITE, "Pitch (MIDI note #)");
+			break;
+
+		case ext_Rhythm:
+			drawList->AddText(center, IM_COL32_WHITE, "Rhythm (In 16th notes)");
+			break;
+
+		// Other rule types...
+		}
+
 
 		// Setup data for rendering the y axis in the region at a scrolling offset
 		ImVec2 yAxisTop(m_topLeft.x + m_scrollingOffset, m_topLeft.y);

@@ -171,7 +171,7 @@ namespace Genetics {
 
 	void GeneticAlgorithmController::stopCurrentlySelectedPhrase() {
 
-		//m_audioEngine.StopAll();
+		m_audioEngine.StopAll();
 	}
 
 

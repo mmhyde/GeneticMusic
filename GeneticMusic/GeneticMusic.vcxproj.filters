@@ -30,12 +30,6 @@
     <ClInclude Include="include\Fitness\FitnessEvaluator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Fitness\FuzzyFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Fitness\HeuristicBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Generation\PopulationGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -162,6 +156,9 @@
     <ClInclude Include="include\Fitness\RuleTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\AudioPlayback\ActiveSound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp">
@@ -177,9 +174,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Fitness\FitnessEvaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Fitness\FuzzyFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Generation\PopulationGenerator.cpp">
@@ -267,6 +261,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Fitness\RuleTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AudioPlayback\ActiveSound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

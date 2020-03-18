@@ -24,7 +24,7 @@ namespace Genetics {
 		FunctionEditor();
 		~FunctionEditor();
 
-		void Draw(std::shared_ptr<Function> function);
+		void Draw(std::shared_ptr<Function> function, RuleType type);
 
 		void setEditable(bool functionEditable) {
 			m_functionEditable = functionEditable;
@@ -37,7 +37,7 @@ namespace Genetics {
 
 		void DrawGridLines();
 
-		void DrawGridAxes();
+		void DrawGridAxes(RuleType type);
 
 		void DrawLineSegments(std::shared_ptr<Function> function);
 
