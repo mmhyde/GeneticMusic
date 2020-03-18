@@ -1,20 +1,18 @@
 
 #include "Mutation/Mutator.h"
 #include "Phrase.h"
+#include "GADefaultConfig.h"
 
 #include <iostream>
+#include <queue>
 
 namespace Genetics {
-
-
-
 
 #define ADD_MUTATION(weight, mutation) \
 	m_mutationWeights.push_back(weight); \
 	m_mutationPool.push_back(&Mutator::mutation)
 
-//#define DEBUG_OUTPUT 1
-
+#define DEBUG_OUTPUT
 
 	Mutator::Mutator()
 	{
@@ -30,17 +28,24 @@ namespace Genetics {
 	void Mutator::InitMutationPool()
 	{
 		//ADD_MUTATION(30, NullOperator);
-		ADD_MUTATION(20, Subdivide);
-		ADD_MUTATION(20, Merge);
+		ADD_MUTATION(15, Subdivide);
+		ADD_MUTATION(15, Merge);
 		//ADD_MUTATION(10, Rest);
 		//ADD_MUTATION(10, NullOperator);
+		ADD_MUTATION(25, Rotate);
+		ADD_MUTATION(20, Transpose);
 
 		m_numMutations = static_cast<unsigned>(m_mutationWeights.size());
 	}
 
 	void Mutator::Mutate(Phrase* phrase) {
 
-		std::uniform_int_distribution<int> distrib(0, 40);
+		int weightSum = 0;
+		for (int weight : m_mutationWeights) {
+			weightSum += weight;
+		}
+
+		std::uniform_int_distribution<int> distrib(0, weightSum);
 		short choice = distrib(m_randomEngine);
 
 		unsigned index = 0;
@@ -193,8 +198,8 @@ namespace Genetics {
 			
 			// Step 1: Determine if we can merge this note
 			// We CAN if:
-			// - The note isn't a whole note (duh) 
-			// - The note is on a "strong" beat relative to it's size (math)
+			// - The note isn't a whole note
+			// - The note is on a "strong" beat relative to it's size
 			if (noteLength != subdivision && (normalizedIndex % (noteLength << 1) == 0)) {
 
 				// Probability!
@@ -210,17 +215,6 @@ namespace Genetics {
 
 				if ((static_cast<float>(roll) / MaxRollNum) <= probability) {
 
-					/*
-					std::cout << phrase->_phraseID << std::endl;
-					std::cout << "Before merge happens, numNotes = " << phrase->_melodicNotes << std::endl;
-
-					for (unsigned i = 0; i < maxNotes; ++i) {
-						std::cout << static_cast<int>(phrase->_melodicRhythm[i]) << " ";
-					}
-
-					std::cout << std::endl;
-					*/
-
 					// Remove the merged note from the array
 					phrase->_melodicRhythm[note + noteLength] = 0;
 					phrase->_melodicData[note + noteLength] = 0;
@@ -228,17 +222,6 @@ namespace Genetics {
 					// Change the size of the current note
 					phrase->_melodicRhythm[note] = (noteLength << 1);
 					phrase->_melodicNotes -= 1; // decrement note count
-
-					/*
-					std::cout << "After merge takes place, numNotes = " << phrase->_melodicNotes << std::endl;
-
-					for (unsigned i = 0; i < maxNotes; ++i) {
-						std::cout << static_cast<int>(phrase->_melodicRhythm[i]) << " ";
-					}
-
-					std::cout << std::endl;
-					std::cout << std::endl;
-					*/
 
 					if (phrase->_melodicNotes < 2) {
 						std::cout << "Something very bad happened" << std::endl;
@@ -277,15 +260,54 @@ namespace Genetics {
 #endif
 	}
 
-	// Pitch based mutation operations
+	// Pitch based mutation operations //
 
+	// Shifts all the pitches in the melody n notes to the left or right
 	void Mutator::Rotate(Phrase* phrase) {
 
 #ifdef DEBUG_OUTPUT
 		std::cout << "Picked rotate mutation" << std::endl;
 #endif
+		constexpr int Left = 1;
+		constexpr int Right = 2;
 
+		// Make a distribution to pick a left or right rotation of notes
+		//std::uniform_int_distribution<int> rotateDir(Left, Right);
+		//int direction = rotateDir(m_randomEngine);
 
+		// Make another distribution to pick how far to rotate each note
+		std::uniform_int_distribution<int> rotationAmount(1, phrase->_melodicNotes - 1);
+		int rotate = rotationAmount(m_randomEngine);
+
+		// Make a queue to store values in temporarily as we write
+		std::queue<char> rotatedPitches;
+
+		// Fill queue with first elements
+		int noteIndex = 0;
+		for (int i = 0; i < rotate; ++i) {
+
+			rotatedPitches.push(phrase->_melodicData[noteIndex]);
+			noteIndex += phrase->_melodicRhythm[noteIndex];
+		}
+
+		int arrayLen = static_cast<int>(phrase->_numMeasures * phrase->_smallestSubdivision);
+
+		// Loop over the entire length of the array performing the rotation
+		for (int i = 0; i < static_cast<int>(phrase->_melodicNotes); ++i) {
+
+			// Use modulo operator to ensure valid range and correct wrapping
+			noteIndex = noteIndex % arrayLen;
+
+			// Store old value for later
+			rotatedPitches.push(phrase->_melodicData[noteIndex]);
+
+			// Grab next element from the queue
+			phrase->_melodicData[noteIndex] = rotatedPitches.front();
+			rotatedPitches.pop();
+
+			// Update index off the rhythm value
+			noteIndex += phrase->_melodicRhythm[noteIndex];
+		}
 	}
 
 	void Mutator::Transpose(Phrase* phrase) {
@@ -293,6 +315,31 @@ namespace Genetics {
 #ifdef DEBUG_OUTPUT
 		std::cout << "Picked transpose mutation" << std::endl;
 #endif
+
+		// Create a distribution for the number of semitones to shift
+		std::uniform_int_distribution<int> semitoneShift(-12, 12);
+		
+		char shiftAmount = static_cast<char>(semitoneShift(m_randomEngine));
+
+		int noteIndex = 0;
+		for (int i = 0; i < static_cast<int>(phrase->_melodicNotes); ++i) {
+
+			// Shift each pitch by the shift amount
+			phrase->_melodicData[noteIndex] += shiftAmount;
+
+			char pitchVal = phrase->_melodicData[noteIndex];
+
+			// Reflect pitches to keep them in the correct range
+			if (pitchVal > MaxPitch) {
+				phrase->_melodicData[noteIndex] = MaxPitch - (pitchVal - MaxPitch);
+			}
+			else if (pitchVal < MinPitch) {
+				phrase->_melodicData[noteIndex] = MinPitch + (MinPitch - pitchVal);
+			}
+
+			// Update index of rhythmic value
+			noteIndex += phrase->_melodicRhythm[noteIndex];
+		}
 	}
 
 	void Mutator::SortAscending(Phrase* phrase) {

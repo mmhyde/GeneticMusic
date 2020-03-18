@@ -20,5 +20,8 @@ namespace Genetics {
 
 	constexpr MeterInfo DefaultMeter = { 80, 4, 4 };
 
+	constexpr uint8_t MaxPitch = 108;
+	constexpr uint8_t MinPitch = 21;
+
 
 } // namespace Genetics

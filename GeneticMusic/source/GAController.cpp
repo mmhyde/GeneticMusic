@@ -5,6 +5,9 @@
 #include "AudioPlayback/SynthesizerBase.h"
 #include "FIleIO/MIDIFiles.h"
 
+//#define TEST_MUTATION
+
+
 namespace Genetics {
 
 	GeneticAlgorithmController::GeneticAlgorithmController()
@@ -36,6 +39,15 @@ namespace Genetics {
 
 	void GeneticAlgorithmController::run() {
 
+#ifdef TEST_MUTATION
+		Phrase* frontPhrase = m_phrasePool->GetPhrases()[0];
+		Phrase* phraseCopy = new Phrase(*frontPhrase);
+
+		m_mutation.Mutate(phraseCopy);
+
+		m_activePhrase = phraseCopy;
+#else
+
 		int16_t genCount = 0;
 		uint32_t maxPopulation = m_populationGen.GetPopulationSize();
 		while (genCount++ < m_iterationsPerStep) {
@@ -64,6 +76,7 @@ namespace Genetics {
 		}
 
 		m_activePhrase = m_phrasePool->GetPhrases()[0];
+#endif
 	}
 
 	void GeneticAlgorithmController::updateAudioEngine() {

@@ -21,6 +21,37 @@ namespace Genetics {
 		{
 		}
 
+		Phrase(const Phrase& rhs)
+			: _phraseID(++_phraseCount) {
+
+			uint32_t arrayLen = _numMeasures * _smallestSubdivision;
+			
+			_melodicNotes = rhs._melodicNotes;
+			// If the source has melody data, copy it
+			if (rhs._melodicData) {
+				_melodicData = new char[arrayLen];
+				std::memcpy(_melodicData, rhs._melodicData, arrayLen);
+			}
+			if (rhs._melodicRhythm) {
+				_melodicRhythm = new char[arrayLen];
+				std::memcpy(_melodicRhythm, rhs._melodicRhythm, arrayLen);
+			}
+
+			_harmonicNotes = rhs._harmonicNotes;
+			// If the source has harmony data, copy it
+			if (rhs._harmonicData) {
+				_harmonicData = new Chord[arrayLen];
+				std::memcpy(_harmonicData, rhs._harmonicData, arrayLen * sizeof(Chord));
+			}
+			if (rhs._harmonicRhythm) {
+				_harmonicRhythm = new char[arrayLen];
+				std::memcpy(_harmonicRhythm, rhs._harmonicRhythm, arrayLen);
+			}
+
+			_fitnessValue = rhs._fitnessValue;
+		}
+
+
 		~Phrase()
 		{
 			if (_melodicData)    { delete[] _melodicData;    }

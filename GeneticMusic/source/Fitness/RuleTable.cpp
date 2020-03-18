@@ -9,11 +9,11 @@ namespace Genetics {
 		: m_maxRules(maxRulesPerType * ext_ExtractorCount) {
 
 		// Verify the rules stored in the table are correctly sized for the union
-		static_assert(    sizeof(RuleBase) == sizeof(PitchRule)
-					   && sizeof(PitchRule) == sizeof(RhythmRule)
-					 //&& sizeof(PitchRule) == sizeof(IntervalRule) 
-					 //&& sizeof(PitchRule) == sizeof(MeasureRule)
-					 , "RuleTable requires all rules to be exactly the same size");
+		static_assert(sizeof(RuleBase) == sizeof(PitchRule)
+			&& sizeof(PitchRule) == sizeof(RhythmRule)
+			//&& sizeof(PitchRule) == sizeof(IntervalRule) 
+			//&& sizeof(PitchRule) == sizeof(MeasureRule)
+			, "RuleTable requires all rules to be exactly the same size");
 
 		// Allocate memory for the actual rules
 		char* ruleMemory = new char[m_maxRules * sizeof(RuleBase)];
@@ -142,20 +142,26 @@ namespace Genetics {
 
 	RuleTable::RuleControl::~RuleControl() {
 
-		// Call the appropriate destructor for the element in the union
-		ruleDestructors[m_ruleType](m_managedRule);
+		// Call the appropriate destructor for the element
+		if (m_constructed) {
+			ruleDestructors[m_ruleType](m_managedRule);
+		}
 	}
 
 	void RuleTable::RuleControl::construct(std::shared_ptr<Function> func, float weight) {
 
 		// Construct the object, dispatch using stored type
-		ruleConstructors[m_ruleType](m_managedRule, func, weight);
+		if (!m_constructed) {
+			ruleConstructors[m_ruleType](m_managedRule, func, weight);
+		}
 	}
 
 	void RuleTable::RuleControl::destruct() {
 
 		// Call the destructor on the object, using stored type as index
-		ruleDestructors[m_ruleType](m_managedRule);
+		if (m_constructed) {
+			ruleDestructors[m_ruleType](m_managedRule);
+		}
 	}
 
 } // namespace Genetics

@@ -100,7 +100,7 @@ namespace Genetics {
 		std::vector<char> melodicPitches;
 		melodicPitches.reserve(numNotes);
 
-		std::uniform_int_distribution<int> distrib(21, 127);
+		std::uniform_int_distribution<int> distrib(MinPitch, MaxPitch);
 		for (unsigned i = 0; i < numNotes; ++i) {
 			melodicPitches.push_back(distrib(m_randomEngine));
 		}
