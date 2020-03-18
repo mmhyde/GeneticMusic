@@ -676,7 +676,7 @@ namespace Genetics {
 
 		ImVec2 center(bottomLeft.x + midPoint, m_bottomRight.y + ImGui::GetTextLineHeight() * 2.25f);
 		
-		switch (type + 1) {
+		switch (type) {
 
 		case ext_Pitch:
 			drawList->AddText(center, IM_COL32_WHITE, "Pitch (MIDI note #)");
