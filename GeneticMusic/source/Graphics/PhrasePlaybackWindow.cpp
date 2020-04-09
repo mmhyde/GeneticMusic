@@ -9,14 +9,13 @@ namespace Genetics {
 
 	const float xPaddingOffset = 8.0f;
 
-	PhrasePlaybackWindow::PhrasePlaybackWindow(PhrasePlaybackInterface* _interface)
-		: m_interface(_interface) {
+	PhrasePlaybackWindow::PhrasePlaybackWindow(std::unique_ptr<PhrasePlaybackInterface> _interface)
+		: m_interface(std::move(_interface)) {
 
 	}
 
 	PhrasePlaybackWindow::~PhrasePlaybackWindow() {
 		
-		delete m_interface;
 	}
 
 	void PhrasePlaybackWindow::render() {

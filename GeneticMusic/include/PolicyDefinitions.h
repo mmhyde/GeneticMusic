@@ -8,9 +8,9 @@
 namespace Genetics {
 
 	using FitnessType   = FitnessEvaluator<AutomaticFitness>;
-	using SelectionType = Selection<RouletteSelection>;
+	using SelectionType = Selection<TournamentSelection>;
     using BreederType   = BreedingMethod<InterpolateBreed>;
 //  using MutationType  = Mutation<>;
-	using PruningType   = GenerationalPrune;
+	using PruningType   = ElitistPrune;
 
 } // namespace Genetics

@@ -115,7 +115,15 @@ namespace Genetics {
 
 		ImGui::SameLine();
 
-		FunctionID targetID = m_ruleData[m_activeRule].funcID;
+		FunctionID targetID = DEFAULT_FUNCTION_ID;
+		for (const RuleInfo& info : m_ruleData) {
+
+			if (info.ruleID == m_activeRule) {
+
+				targetID = info.funcID;
+				break;
+			}
+		}
 		std::shared_ptr<Function> original = m_interface->m_getFunctionObject(targetID);
 
 		static std::string functionName;
@@ -285,9 +293,9 @@ namespace Genetics {
 				ImGui::Text("Unable to import the specified file");
 			}
 
-			ImGui::InputText("FileName", &(importPath.front()), importPath.size());
+			bool enterHit = ImGui::InputText("FileName", &(importPath.front()), importPath.size(), ImGuiInputTextFlags_EnterReturnsTrue);
 
-			if (ImGui::Button("Import")) { 
+			if (enterHit || ImGui::Button("Import")) { 
 
 				std::string toLoad = importPath.substr(0, importPath.find('\0'));
 				toLoad.append(".xml");
@@ -338,7 +346,7 @@ namespace Genetics {
 				ImGui::Text("Unable to export the specified file");
 			}
 
-			ImGui::InputText("FileName", &(exportPath.front()), exportPath.size());
+			bool enterHit = ImGui::InputText("FileName", &(exportPath.front()), exportPath.size(), ImGuiInputTextFlags_EnterReturnsTrue);
 
 			if (ImGui::Button("Export")) {
 
@@ -483,11 +491,19 @@ namespace Genetics {
 
 	void RuleEditor::DrawFunctionEditor() {
 
-		const RuleInfo& activeRule = m_interface->m_getAllRuleData()[m_activeRule];
-		std::shared_ptr<Function> function = m_interface->m_getFunctionObject(activeRule.funcID);
+		const std::vector<RuleInfo>& infoVec = m_interface->m_getAllRuleData();
+		for (const RuleInfo& info : infoVec) {
+			
+			if (info.ruleID == m_activeRule) {
+				
+				std::shared_ptr<Function> function = m_interface->m_getFunctionObject(info.funcID);
 
-		m_editor.setEditable(activeRule.funcID != DEFAULT_FUNCTION_ID);
-		m_editor.Draw(function, hashIDToType(m_activeRule));
+				m_editor.setEditable(info.funcID != DEFAULT_FUNCTION_ID);
+				m_editor.Draw(function, hashIDToType(m_activeRule));
+
+				break;
+			}
+		}
 	}
 
 	constexpr float gridMin = 0.0f;
@@ -498,8 +514,6 @@ namespace Genetics {
 		m_gridDomain = ImVec2(0.0f, 50.0f);
 
 		m_gridDensity = ImVec2(0.1f, 0.1f);
-
-		
 	}
 
 	FunctionEditor::~FunctionEditor() {
@@ -686,6 +700,13 @@ namespace Genetics {
 			drawList->AddText(center, IM_COL32_WHITE, "Rhythm (In 16th notes)");
 			break;
 
+		case ext_Interval:
+			drawList->AddText(center, IM_COL32_WHITE, "Interval (Semitones)");
+			break;
+
+		case ext_Measure:
+			drawList->AddText(center, IM_COL32_WHITE, "Rhythm (1 - 16) and Pitch (21 - 108)");
+			break;
 		// Other rule types...
 		}
 

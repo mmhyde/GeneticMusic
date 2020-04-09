@@ -13,16 +13,13 @@ namespace Genetics {
 	m_mutationWeights.push_back(weight); \
 	m_mutationPool.push_back(&Mutator::mutation)
 
-//#define DEBUG_OUTPUT
-
 	Mutator::Mutator()
 	{
 		std::random_device rd;
 		m_randomEngine.seed(rd());
 	}
 
-	Mutator::~Mutator()
-	{
+	Mutator::~Mutator() {
 
 	}
 
@@ -35,6 +32,11 @@ namespace Genetics {
 		//ADD_MUTATION(10, NullOperator);
 		ADD_MUTATION(25, Rotate);
 		ADD_MUTATION(20, Transpose);
+		ADD_MUTATION(20, SortAscending);
+		ADD_MUTATION(20, SortDescending);
+		//ADD_MUTATION(25, Retrograde);
+		//ADD_MUTATION(25, Inversion);
+		//ADD_MUTATION(25, Retrograde);
 
 		m_numMutations = static_cast<unsigned>(m_mutationWeights.size());
 	}
@@ -63,7 +65,7 @@ namespace Genetics {
 
 	void Mutator::NullOperator(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked the null operator mutation" << std::endl;
 #endif
 		// Intentionally Blank
@@ -71,7 +73,7 @@ namespace Genetics {
 
 	void Mutator::Subdivide(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked Subdivision Mutation" << std::endl;
 #endif
 
@@ -170,7 +172,7 @@ namespace Genetics {
 
 	void Mutator::Merge(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked Merge mutation" << std::endl;
 #endif
 
@@ -196,12 +198,14 @@ namespace Genetics {
 
 			float mergeProbability = StartingProbability;
 			int noteLength = phrase->_melodicRhythm[note];
+			int mergeTarget = phrase->_melodicRhythm[note + noteLength];
 			
 			// Step 1: Determine if we can merge this note
 			// We CAN if:
 			// - The note isn't a whole note
 			// - The note is on a "strong" beat relative to it's size
-			if (noteLength != subdivision && (normalizedIndex % (noteLength << 1) == 0)) {
+			// - The note and the merge target are the same length (Can't merge a quarter and an eighth for example)
+			if (noteLength != subdivision && (normalizedIndex % (noteLength << 1) == 0) && noteLength == mergeTarget) {
 
 				// Probability!
 				for (unsigned shifted = noteLength; shifted > 1; shifted >>= 1) {
@@ -256,7 +260,7 @@ namespace Genetics {
 
 	void Mutator::Rest(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked Rest mutation" << std::endl;
 #endif
 	}
@@ -266,7 +270,7 @@ namespace Genetics {
 	// Shifts all the pitches in the melody n notes to the left or right
 	void Mutator::Rotate(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked rotate mutation" << std::endl;
 #endif
 		constexpr int Left = 1;
@@ -313,7 +317,7 @@ namespace Genetics {
 
 	void Mutator::Transpose(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked transpose mutation" << std::endl;
 #endif
 
@@ -345,31 +349,129 @@ namespace Genetics {
 
 	void Mutator::SortAscending(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked sort (ascending) mutation" << std::endl;
 #endif
+
+		std::vector<char> pitches;
+		uint32_t arrayLen = Phrase::_numMeasures * Phrase::_smallestSubdivision;
+		pitches.reserve(arrayLen);
+
+		// Build a vector of all pitches in the melody
+		uint32_t note = 0;
+		for (uint32_t i = 0; i < phrase->_melodicNotes; ++i) {
+
+			pitches.push_back(phrase->_melodicData[note]);
+			note += phrase->_melodicRhythm[note];
+		}
+
+		// Sort lowest to highest
+		std::sort(pitches.begin(), pitches.end());
+
+		// Place notes back in the melody in ascending order
+		
+		for (uint32_t i = 0, note = 0; i < phrase->_melodicNotes; ++i) {
+
+			phrase->_melodicData[note] = pitches[i];
+			note += phrase->_melodicRhythm[note];
+		}
 	}
 
 	void Mutator::SortDescending(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked sort (descending) mutation" << std::endl;
 #endif
+
+		std::vector<char> pitches;
+		pitches.reserve(phrase->_melodicNotes);
+
+		// Build a vector of all pitches in the melody
+		uint32_t note = 0;
+		for (uint32_t i = 0; i < phrase->_melodicNotes; ++i) {
+
+			pitches.push_back(phrase->_melodicData[note]);
+			note += phrase->_melodicRhythm[note];
+		}
+
+		// Sort highest to lowest
+		std::sort(pitches.begin(), pitches.end(), std::greater<char>());
+
+		// Place notes back in the melody in ascending order
+		
+		for (uint32_t i = 0, note = 0; i < phrase->_melodicNotes; ++i) {
+
+			phrase->_melodicData[note] = pitches[i];
+			note += phrase->_melodicRhythm[note];
+		}
 	}
 
 
 	void Mutator::Inversion(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked Inversion mutation" << std::endl;
 #endif
+
+		std::vector<char> pitches;
+		pitches.reserve(phrase->_melodicNotes);
+
+		// Build a vector of all pitches in the melody
+		uint32_t note = 0;
+		for (uint32_t i = 0; i < phrase->_melodicNotes; ++i) {
+
+			pitches.push_back(phrase->_melodicData[note]);
+			note += phrase->_melodicRhythm[note];
+		}
+
+		// Sort to find midpoint
+		std::sort(pitches.begin(), pitches.end());
+		uint32_t midpoint = static_cast<uint32_t>(pitches.size() / 2);
+
+		// Find the center pitch to flip notes around
+		char centerPitch = phrase->_melodicData[midpoint];
+		
+		// If we have an even number of notes, average the middle two values
+		if (pitches.size() % 2 == 0) {
+			centerPitch += phrase->_melodicData[midpoint - 1];
+			centerPitch /= 2;
+		}
+
+		// Loop over each pitch
+		for (uint32_t i = 0, note = 0; i < phrase->_melodicNotes; ++i) {
+
+			// Determine shift amount of each pitch, and perform the shift
+			char shiftAmount = 2 * (centerPitch - phrase->_melodicData[note]);
+			phrase->_melodicData[note] += shiftAmount;
+
+			note += phrase->_melodicRhythm[note];
+		}
 	}
 
 	void Mutator::Retrograde(Phrase* phrase) {
 
-#ifdef DEBUG_OUTPUT
+#ifdef _DEBUG
 		std::cout << "Picked Retrograde mutation" << std::endl;
 #endif
+
+		std::vector<char> pitches;
+		pitches.reserve(phrase->_melodicNotes);
+
+		// Build vector of pitches to reverse the order later
+		uint32_t note = 0;
+		for (uint32_t i = 0; i < phrase->_melodicNotes; ++i) {
+
+			pitches.push_back(phrase->_melodicData[note]);
+			note += phrase->_melodicRhythm[note];
+		}
+
+		// Place the notes back in reverse order
+		for (uint32_t i = 0, note = 0; i < phrase->_melodicNotes; ++i) {
+
+			phrase->_melodicData[note] = pitches.back();
+			pitches.pop_back();
+			note += phrase->_melodicRhythm[note];
+		}
 	}
 
 } // namespace Genetics

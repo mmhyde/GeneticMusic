@@ -48,8 +48,8 @@ namespace Genetics {
 
 		const std::vector<Phrase*>& getPhraseList() const;
 
-		void exportPhraseToMIDI(const std::string& filepath) const;
-		void importMIDIToPhrase(const std::string& filepath);
+		void exportPhraseToMIDI(const std::string& filepath, Phrase* phrase = nullptr) const;
+		void importMIDIToPhrase(const std::string& filepath, Phrase* phrase = nullptr);
 		
 		// Audio Playback Functions //
 

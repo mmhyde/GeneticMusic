@@ -17,7 +17,7 @@ namespace Genetics {
 		Phrase() 
 			: _melodicData(0), _melodicRhythm(0), _melodicNotes(0),
 			  _harmonicData(0), _harmonicRhythm(0), _harmonicNotes(0),
-			  _fitnessValue(0.5f), _phraseID(++_phraseCount)
+			  _fitnessValue(0.0f), _phraseID(++_phraseCount)
 		{
 		}
 

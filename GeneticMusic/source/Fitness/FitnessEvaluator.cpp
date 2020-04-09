@@ -112,16 +112,26 @@ namespace Genetics {
 
 	void AutomaticFitness::evaluate(Phrase* phrase) {
 
-		ExtractorBase* pitchExtractor = m_extractorList[ext_Pitch];
-		float fitness = pitchExtractor->process(phrase);
+		float fitness = 0.0f;
+		uint16_t numRules = 0;
+		for (ExtractorBase* extractor : m_extractorList) {
 
-		//float fitness = m_heuristic.AnalyzePhrase(phrase);
+			fitness += extractor->process(phrase);
+			numRules += extractor->getNumRules();
+		}
+
+		if (numRules > 0) {
+			fitness = fitness / static_cast<float>(numRules);
+		}
+		
+#ifdef _DEBUG
 		if (fitness > 1.0f || std::isnan(fitness)) {
 			std::cout << "problem phrase discovered" << std::endl;
 		}
-		if (fitness < FITNESS_EPSILON) {
-			fitness = FITNESS_EPSILON;
-		}
+#endif
+
+		// Boundry clipping for cleaner outputs
+		if (fitness < FITNESS_EPSILON) { fitness = FITNESS_EPSILON; }
 
 		phrase->_fitnessValue = fitness;
 	}

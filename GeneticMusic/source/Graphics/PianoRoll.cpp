@@ -18,8 +18,8 @@ namespace Genetics {
 		e_totalLayers
 	};
 
-	PianoRoll::PianoRoll(PianoRollInterface* _interface)
-		: m_interface(_interface) {
+	PianoRoll::PianoRoll(std::unique_ptr<PianoRollInterface> _interface)
+		: m_interface(std::move(_interface)) {
 
 		constexpr unsigned numKeys = sizeof(m_keyArray) / sizeof(Key);
 
@@ -27,7 +27,6 @@ namespace Genetics {
 		for (unsigned i = 0; i < numKeys; ++i) {
 			m_keyArray[i].m_noteValue = i;
 		}
-
 	}
 
 	PianoRoll::~PianoRoll() {

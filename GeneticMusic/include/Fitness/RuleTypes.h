@@ -7,8 +7,8 @@ namespace Genetics {
 	enum typesEnum {
 		ext_Pitch = 0,
 		ext_Rhythm,
-		//ext_Interval,
-		//ext_Measure,
+		ext_Interval,
+		ext_Measure,
 		ext_ExtractorCount
 	};
 

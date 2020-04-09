@@ -9,7 +9,16 @@
 
 namespace Genetics {
 
-	BreedingPair RouletteSelection::Select(PhrasePool* phrasePopulation, std::mt19937& randomEngine) {
+	RouletteSelection::RouletteSelection() {
+		std::random_device rd;
+		m_randomEngine.seed(rd());
+	}
+
+	RouletteSelection::~RouletteSelection() {
+
+	}
+
+	BreedingPair RouletteSelection::Select(PhrasePool* phrasePopulation) {
 
 		const std::vector<Phrase*>& phrases = phrasePopulation->GetPhrases();
 		float totalFitness = 0.0f;
@@ -24,7 +33,7 @@ namespace Genetics {
 
 		// Generate a number from 0 to 100 and divide by total fitness
 		std::uniform_int_distribution<int> distrib(0, 99);
-		float probability = static_cast<float>(distrib(randomEngine)) / 100.0f;
+		float probability = static_cast<float>(distrib(m_randomEngine)) / 100.0f;
 		float choice1 = totalFitness * probability;
 		float choice2 = probability + 0.5f;
 		if (choice2 >= 1.0f) {
@@ -59,6 +68,18 @@ namespace Genetics {
 		return std::make_pair(selection1, selection2);
 	}
 
+	TournamentSelection::TournamentSelection() {
+
+		std::random_device rd;
+		m_randomEngine.seed(rd());
+
+		SetParentPoolSize(4);
+	}
+
+	TournamentSelection::~TournamentSelection() {
+
+	}
+
 	void TournamentSelection::SetNumRounds(unsigned numRounds) {
 
 		m_numRounds = (numRounds > 0) ? numRounds : 1;
@@ -69,10 +90,7 @@ namespace Genetics {
 		m_possibleParents = (numPossibleParents > 0) ? numPossibleParents : 1;
 	}
 
-	// Helper to run a single round of a tournament
-	Phrase* RunTournament(const std::vector<Phrase*>& population, std::mt19937& randomEngine, int parents);
-
-	BreedingPair TournamentSelection::Select(PhrasePool* population, std::mt19937& randomEngine) {
+	BreedingPair TournamentSelection::Select(PhrasePool* population) {
 
 		Phrase* selection1 = nullptr;
 		Phrase* selection2 = nullptr;
@@ -81,13 +99,13 @@ namespace Genetics {
 
 		// Pick two parents by running two seperate tournaments
 		// TODO: add support for multi round tournaments
-		selection1 = RunTournament(phraseList, randomEngine, m_possibleParents);
-		selection2 = RunTournament(phraseList, randomEngine, m_possibleParents);
+		selection1 = RunTournament(phraseList, m_possibleParents);
+		selection2 = RunTournament(phraseList, m_possibleParents);
 		
 		// Ensure we have two different parents
 		while (selection1 == selection2) {
 
-			selection2 = RunTournament(phraseList, randomEngine, m_possibleParents);
+			selection2 = RunTournament(phraseList, m_possibleParents);
 		}
 
 		// Return the two parents as a pair
@@ -95,15 +113,15 @@ namespace Genetics {
 	}
 	
 	// Helper to run a single round of a tournament
-	Phrase* RunTournament(const std::vector<Phrase*>& population, std::mt19937& randomEngine, int parents) {
+	Phrase* TournamentSelection::RunTournament(const std::vector<Phrase*>& population, int parents) {
 
 		Phrase* best = nullptr;
-		std::uniform_int_distribution<int> integers(0, static_cast<int>(population.size()));
+		std::uniform_int_distribution<int> integers(0, static_cast<int>(population.size() - 1));
 		// Loop over the number of potential parents
 		for (int k = 0; k < parents; ++k) {
 
 			// Randomly select a parent from the population
-			Phrase* candidate = population[integers(randomEngine)];
+			Phrase* candidate = population[integers(m_randomEngine)];
 
 			// Check if it's better than the current best, and save it if so
 			if (best == nullptr || best->_fitnessValue < candidate->_fitnessValue) {

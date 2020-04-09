@@ -5,7 +5,10 @@
 */
 
 #include "PhrasePool.h"
-#include <iostream>
+#include "GADefaultConfig.h"
+
+#include <iostream>  // std::cout
+#include <algorithm> // std::sort
 
 namespace Genetics {
 
@@ -17,22 +20,22 @@ namespace Genetics {
 	PhrasePool::PhrasePool(PoolAllocator<Phrase>& poolAlloc, unsigned measureCount, unsigned subDivision)
 		: m_poolAllocator(poolAlloc), m_measureCount(measureCount), m_subDivision(subDivision) {
 
-		m_population.reserve(poolAlloc.Capacity() - 1);
+		m_population.reserve(poolAlloc.capacity() - 1);
 	}
 
 	PhrasePool::~PhrasePool() {
 
 		for (Phrase* iter : m_population) {
-			m_poolAllocator.Free(iter);
+			m_poolAllocator.free(iter);
 		}
 		for (Phrase* iter : m_childPopulation) {
-			m_poolAllocator.Free(iter);
+			m_poolAllocator.free(iter);
 		}
 	}
 
 	Phrase* PhrasePool::AllocateChild() {
 
-		Phrase* newPhrase = m_poolAllocator.Alloc();
+		Phrase* newPhrase = m_poolAllocator.alloc();
 		if (newPhrase) {
 
 			// Allocate space for a note every 16th to make later operations easier
@@ -85,6 +88,17 @@ namespace Genetics {
 	// Elitist Uses the best parents and their children first
 	void ElitistPrune::Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children) {
 
+		// Add all the children to the parent vector and sort it in order of decreasing fitness values
+		parents.insert(parents.end(), children.begin(), children.end());
+		std::sort(parents.begin(), parents.end(), PhraseFitnessSorter());
+
+		children.clear();
+
+		while (parents.size() > DefaultPopulationSize) {
+
+			poolAlloc.free(parents.back());
+			parents.pop_back();
+		}
 
 	}
 
@@ -94,7 +108,7 @@ namespace Genetics {
 		// Free all the parents in the parent vector
 		for (Phrase* parent : parents) {
 
-			poolAlloc.Free(parent);
+			poolAlloc.free(parent);
 		}
 
 		// Clear the vector

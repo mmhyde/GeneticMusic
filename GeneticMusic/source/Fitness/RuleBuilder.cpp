@@ -57,6 +57,7 @@ namespace Genetics {
 		return total / static_cast<float>(count);
 	}
 
+
 	RhythmRule::RhythmRule(std::shared_ptr<Function> evalFunction, float weight)
 		: RuleBase(evalFunction, weight) {
 
@@ -85,6 +86,68 @@ namespace Genetics {
 	}
 
 
+	IntervalRule::IntervalRule(std::shared_ptr<Function> evalFunction, float weight)
+		: RuleBase(evalFunction, weight) {
 
+	}
+
+	IntervalRule::IntervalRule(const IntervalRule& source)
+		: RuleBase(source) {
+
+	}
+
+	IntervalRule& IntervalRule::operator=(const IntervalRule& rhs) {
+
+		RuleBase::operator=(rhs);
+		return *this;
+	}
+
+	float IntervalRule::evaluate(uint8_t* intervalData, uint32_t count) const {
+
+		float total = 0.0f;
+		for (uint32_t i = 0; i < count; ++i) {
+
+			total += (*m_evaluationFunction)(intervalData[i]);
+		}
+
+		return total / static_cast<float>(count);
+	}
+
+
+	MeasureRule::MeasureRule(std::shared_ptr<Function> evalFunction, float weight)
+		: RuleBase(evalFunction, weight) {
+
+	}
+
+	MeasureRule::MeasureRule(const MeasureRule& source)
+		: RuleBase(source) {
+
+	}
+
+	MeasureRule& MeasureRule::operator=(const MeasureRule& rhs) {
+
+		RuleBase::operator=(rhs);
+		return *this;
+	}
+
+	// This is kindof a weird one, my thought process here is that we make a weird function 
+	// that has scores for rhythm values (1 - 16) since they don't overlap with any valid notes (21 - 108)
+	float MeasureRule::evaluate(Measure* measureData, uint32_t count) const {
+
+		float total = 0.0f;
+		for (uint32_t i = 0; i < count; ++i) {
+
+			const Measure& currentMeasure = measureData[i];
+			for (uint16_t j = 0; j < currentMeasure._numNotes; ++j) {
+
+				float pitchRes = (*m_evaluationFunction)(currentMeasure._pitches[j]);
+				float rhythmRes = (*m_evaluationFunction)(currentMeasure._rhythms[j]);
+
+				total += pitchRes * rhythmRes;
+			}
+		}
+
+		return total / static_cast<float>(count);
+	}
 
 } // namespace Genetics

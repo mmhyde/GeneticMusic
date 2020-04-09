@@ -11,6 +11,7 @@
 namespace Genetics {
 
 	struct Phrase;
+	struct Measure;
 
 	class RuleBase;
 	class PitchRule;
@@ -27,7 +28,7 @@ namespace Genetics {
 		virtual ~ExtractorBase() {}
 		
 		virtual float process(Phrase* subject) const = 0;
-		virtual void setRuleWeight(short id, float weight) = 0;
+		virtual uint16_t getNumRules() const = 0;
 	};
 
 	class PitchExtractor : public ExtractorBase {
@@ -37,11 +38,13 @@ namespace Genetics {
 		~PitchExtractor();
 
 		float process(Phrase* subject) const override;
-		void setRuleWeight(short id, float weight) override;
+		uint16_t getNumRules() const override { return m_pitchRules.getRuleCount(); }
 
 	private:
 		const RuleList<PitchRule> m_pitchRules;
+		char* m_dataBuffer;
 	};
+
 
 	class RhythmExtractor : public ExtractorBase {
 
@@ -50,40 +53,43 @@ namespace Genetics {
 		~RhythmExtractor();
 
 		float process(Phrase* subject) const override;
-		void setRuleWeight(short id, float weight) override;
-		
+		uint16_t getNumRules() const override { return m_rhythmRules.getRuleCount(); }
+
 	private:
 		const RuleList<RhythmRule> m_rhythmRules;
+		char* m_dataBuffer;
 	};
 
-	/*
+	
 	class IntervalExtractor : public ExtractorBase {
 
 	public:
-		IntervalExtractor();
+		IntervalExtractor(const RuleList<IntervalRule> rules);
 		~IntervalExtractor();
 
-		float process(Phrase* subject) override;
-		void setRuleWeight(short id, float weight) override;
+		float process(Phrase* subject) const override;
+		uint16_t getNumRules() const override { return m_intervalRules.getRuleCount(); }
 
 	private:
 		const RuleList<IntervalRule> m_intervalRules;
+		uint8_t* m_dataBuffer;
 	};
+
 
 	class MeasureExtractor : public ExtractorBase {
 		
 	public:
-		MeasureExtractor();
+		MeasureExtractor(const RuleList<MeasureRule> rules);
 		~MeasureExtractor();
 
-		float process(Phrase* subject) override;
-		void setRuleWeight(short id, float weight) override;
+		float process(Phrase* subject) const override;
+		uint16_t getNumRules() const override { return m_measureRules.getRuleCount(); }
 
 	private:
 		const RuleList<MeasureRule> m_measureRules;
+		Measure* m_dataBuffer;
 	};
 
-	*/
 	// More extractors here...
 
 } // namespace Genetics

@@ -10,8 +10,8 @@
 
 namespace Genetics {
 
-	AlgorithmExecutionWindow::AlgorithmExecutionWindow(AlgorithmExecutionInterface* _interface)
-		: m_interface(_interface) {
+	AlgorithmExecutionWindow::AlgorithmExecutionWindow(std::unique_ptr<AlgorithmExecutionInterface> _interface)
+		: m_interface(std::move(_interface)) {
 
 	}
 

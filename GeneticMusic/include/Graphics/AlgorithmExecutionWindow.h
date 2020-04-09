@@ -2,6 +2,7 @@
 #pragma once
 
 #include "Graphics/UIElements.h"
+#include <memory>
 
 namespace Genetics {
 
@@ -10,13 +11,13 @@ namespace Genetics {
 	class AlgorithmExecutionWindow : public UIElement {
 
 	public:
-		AlgorithmExecutionWindow(AlgorithmExecutionInterface* interface);
+		AlgorithmExecutionWindow(std::unique_ptr<AlgorithmExecutionInterface> interface);
 		~AlgorithmExecutionWindow();
 
 		void render() override;
 
 	private:
-		AlgorithmExecutionInterface* m_interface;
+		std::unique_ptr<AlgorithmExecutionInterface> m_interface;
 
 	};
 

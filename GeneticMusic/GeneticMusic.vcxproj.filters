@@ -159,6 +159,12 @@
     <ClInclude Include="include\AudioPlayback\ActiveSound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Utility\Diagnostics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fitness\Modifiers\ModifierBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp">
@@ -264,6 +270,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\AudioPlayback\ActiveSound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Utility\Diagnostics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

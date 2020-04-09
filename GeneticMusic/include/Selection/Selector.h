@@ -13,29 +13,36 @@ namespace Genetics {
 	struct RouletteSelection
 	{
 	public:
-		// Intentionally Blank
+		RouletteSelection();
+		~RouletteSelection();
 
 	protected:
-		BreedingPair Select(PhrasePool* phrasePopulation, std::mt19937& randomEngine);
+		BreedingPair Select(PhrasePool* phrasePopulation);
 
-		~RouletteSelection() {}
+	private:
+		std::mt19937 m_randomEngine;
+
 	};
 
 	struct TournamentSelection {
 
 	public:
+		TournamentSelection();
+		~TournamentSelection();
+
 		void SetNumRounds(unsigned numRounds = 1);
 		void SetParentPoolSize(unsigned numPossibleParents = 2);
 
 	protected:
-		BreedingPair Select(PhrasePool*, std::mt19937&);
-
-		~TournamentSelection() {}
+		BreedingPair Select(PhrasePool* phrasePopulation);
 	
 	private:
+		Phrase* RunTournament(const std::vector<Phrase*>& population, int parents);
+
 		unsigned m_numRounds;
 		unsigned m_possibleParents;
 
+		std::mt19937 m_randomEngine;
 	};
 
 
@@ -47,27 +54,20 @@ namespace Genetics {
 		~Selection();
 
 		BreedingPair SelectPair(PhrasePool* phrasePopulation);
-
-	private:
-		std::mt19937 m_randomEngine;
 	};
 
 	template <class Policy>
-	Selection<Policy>::Selection()
-	{
-		std::random_device rd;
-		m_randomEngine.seed(rd());
+	Selection<Policy>::Selection() {
 	}
 
 	template <class Policy>
-	Selection<Policy>::~Selection()
-	{
+	Selection<Policy>::~Selection() {
 	}
 
 	template <class Policy>
 	BreedingPair Selection<Policy>::SelectPair(PhrasePool* phrasePopulation)
 	{
-		return this->Select(phrasePopulation, m_randomEngine);
+		return Policy::Select(phrasePopulation);
 	}
 
 } // namespace Genetic

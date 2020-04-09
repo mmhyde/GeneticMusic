@@ -11,8 +11,8 @@ namespace Genetics {
 		// Verify the rules stored in the table are correctly sized for the union
 		static_assert(sizeof(RuleBase) == sizeof(PitchRule)
 			&& sizeof(PitchRule) == sizeof(RhythmRule)
-			//&& sizeof(PitchRule) == sizeof(IntervalRule) 
-			//&& sizeof(PitchRule) == sizeof(MeasureRule)
+			&& sizeof(PitchRule) == sizeof(IntervalRule) 
+			&& sizeof(PitchRule) == sizeof(MeasureRule)
 			, "RuleTable requires all rules to be exactly the same size");
 
 		// Allocate memory for the actual rules
@@ -122,18 +122,18 @@ namespace Genetics {
 	RuleConstructImpl::ConstructRule ruleConstructors[] =
 	{
 		RuleConstructImpl::constructRule<PitchRule>,
-		RuleConstructImpl::constructRule<RhythmRule>
-		//RuleConstructImpl::constructRule<IntervalRule>,
-		//RuleConstructImpl::constructRule<MeasureRule>
+		RuleConstructImpl::constructRule<RhythmRule>,
+		RuleConstructImpl::constructRule<IntervalRule>,
+		RuleConstructImpl::constructRule<MeasureRule>
 	};
 
 	// Array to hold methods for destructing each type of rule
 	RuleConstructImpl::DestructRule ruleDestructors[] =
 	{
 		RuleConstructImpl::destructRule<PitchRule>,
-		RuleConstructImpl::destructRule<RhythmRule>
-		//RuleConstructImpl::destructRule<IntervalRule>,
-		//RuleConstructImpl::destructRule<MeasureRule>
+		RuleConstructImpl::destructRule<RhythmRule>,
+		RuleConstructImpl::destructRule<IntervalRule>,
+		RuleConstructImpl::destructRule<MeasureRule>
 	};
 
 	RuleTable::RuleControl::RuleControl(RuleType ruleType, RuleBase* memoryAddr)

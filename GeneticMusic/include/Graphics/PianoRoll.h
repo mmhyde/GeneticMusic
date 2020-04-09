@@ -1,7 +1,9 @@
 // Morgen Hyde
 
 #pragma once
+
 #include "Graphics/UIElements.h"
+#include <memory>
 
 namespace Genetics {
 
@@ -11,8 +13,7 @@ namespace Genetics {
 	class PianoRoll : public UIElement {
 
 	public:
-
-		PianoRoll(PianoRollInterface* interface);
+		PianoRoll(std::unique_ptr<PianoRollInterface> interface);
 		~PianoRoll();
 
 		void render() override;
@@ -40,7 +41,7 @@ namespace Genetics {
 		float m_scrollingX, m_scrollingY;
 		float m_gridThickness;
 	
-		PianoRollInterface* m_interface;
+		std::unique_ptr<PianoRollInterface> m_interface;
 		Key m_keyArray[128];
 
 		bool m_mouseHoveringThisFrame;

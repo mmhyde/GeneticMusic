@@ -3,6 +3,7 @@
 #include "Fitness/RuleManager.h"
 #include "Fitness/RuleBuilder.h"
 #include "Fitness/FunctionBuilder.h"
+#include "Fitness/Modifiers/ModifierBase.h"
 
 #include "FileIO/FitnessFiles.h"
 
@@ -53,8 +54,10 @@ namespace Genetics {
 
 		extractorVec.resize(ext_ExtractorCount);
 
-		extractorVec[ext_Pitch] = new PitchExtractor(m_ruleTable.getRuleList<PitchRule>(ext_Pitch));
-		extractorVec[ext_Rhythm]   = new RhythmExtractor(m_ruleTable.getRuleList<RhythmRule>(ext_Pitch));
+		extractorVec[ext_Pitch]    = new PitchExtractor(m_ruleTable.getRuleList<PitchRule>(ext_Pitch));
+		extractorVec[ext_Rhythm]   = new RhythmExtractor(m_ruleTable.getRuleList<RhythmRule>(ext_Rhythm));
+		extractorVec[ext_Interval] = new IntervalExtractor(m_ruleTable.getRuleList<IntervalRule>(ext_Interval));
+		extractorVec[ext_Measure]  = new MeasureExtractor(m_ruleTable.getRuleList<MeasureRule>(ext_Measure));
 	}
 
 	// Add / Remove rules and rule components from the manager

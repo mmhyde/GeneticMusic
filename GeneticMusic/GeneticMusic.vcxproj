@@ -182,6 +182,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClInclude Include="include\AudioPlayback\SynthesizerBase.h" />
     <ClInclude Include="include\Breeding\Breeder.h" />
     <ClInclude Include="include\FileIO\FitnessFiles.h" />
+    <ClInclude Include="include\Fitness\Modifiers\ModifierBase.h" />
     <ClInclude Include="include\Fitness\RuleTable.h" />
     <ClInclude Include="include\Fitness\RuleList.h" />
     <ClInclude Include="include\Fitness\RuleManager.h" />
@@ -223,6 +224,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClInclude Include="include\PoolAllocator.h" />
     <ClInclude Include="include\Selection\Selector.h" />
     <ClInclude Include="include\Util.h" />
+    <ClInclude Include="include\Utility\Diagnostics.h" />
     <ClInclude Include="include\Utility\GUIDGenerator.h" />
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +263,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClCompile Include="source\Mutation\Mutator.cpp" />
     <ClCompile Include="source\PhrasePool.cpp" />
     <ClCompile Include="source\Selection\Selector.cpp" />
+    <ClCompile Include="source\Utility\Diagnostics.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

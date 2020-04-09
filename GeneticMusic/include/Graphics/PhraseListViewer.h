@@ -2,6 +2,7 @@
 #pragma once
 
 #include "UIElements.h"
+#include <memory>
 
 namespace Genetics {
 
@@ -10,13 +11,13 @@ namespace Genetics {
 	class PhraseListViewer : public UIElement {
 
 	public:
-		PhraseListViewer(PhraseSelectorInterface* interface);
+		PhraseListViewer(std::unique_ptr<PhraseSelectorInterface> interface);
 		~PhraseListViewer();
 
 		void render() override;
 
 	private:
-		PhraseSelectorInterface* m_interface;
+		std::unique_ptr<PhraseSelectorInterface> m_interface;
 
 	};
 

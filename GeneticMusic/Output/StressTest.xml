@@ -1,0 +1,309 @@
+<Rule>
+	<RuleID>
+	0
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	1
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	1
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	2
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	2
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	3
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	4
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	5
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	6
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	7
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	8
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	9
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	10
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	11
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	12
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	13
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Rule>
+	<RuleID>
+	14
+	</RuleID>
+	<ModifierID>
+	0
+	</ModifierID>
+	<FunctionID>
+	3
+	</FunctionID>
+</Rule>
+<Function>
+	<Name>
+	Pitch_Rejection
+	</Name>
+	<FunctionID>
+	1
+	</FunctionID>
+	<Vertex>
+	47
+	0.000000
+	</Vertex>
+	<Vertex>
+	48
+	0.300000
+	</Vertex>
+	<Vertex>
+	59
+	0.300000
+	</Vertex>
+	<Vertex>
+	60
+	1.000000
+	</Vertex>
+	<Vertex>
+	72
+	1.000000
+	</Vertex>
+	<Vertex>
+	73
+	0.300000
+	</Vertex>
+	<Vertex>
+	84
+	0.300000
+	</Vertex>
+	<Vertex>
+	85
+	0.000000
+	</Vertex>
+</Function>
+<Function>
+	<Name>
+	C_Major
+	</Name>
+	<FunctionID>
+	2
+	</FunctionID>
+	<Vertex>
+	59
+	0.000000
+	</Vertex>
+	<Vertex>
+	60
+	1.000000
+	</Vertex>
+	<Vertex>
+	61
+	0.000000
+	</Vertex>
+	<Vertex>
+	62
+	1.000000
+	</Vertex>
+	<Vertex>
+	63
+	0.000000
+	</Vertex>
+	<Vertex>
+	64
+	1.000000
+	</Vertex>
+	<Vertex>
+	65
+	1.000000
+	</Vertex>
+	<Vertex>
+	66
+	-0.000000
+	</Vertex>
+	<Vertex>
+	67
+	1.000000
+	</Vertex>
+	<Vertex>
+	68
+	0.000000
+	</Vertex>
+	<Vertex>
+	69
+	1.000000
+	</Vertex>
+	<Vertex>
+	70
+	-0.000000
+	</Vertex>
+	<Vertex>
+	71
+	1.000000
+	</Vertex>
+	<Vertex>
+	72
+	1.000000
+	</Vertex>
+	<Vertex>
+	73
+	0.000000
+	</Vertex>
+</Function>
+<Function>
+	<Name>
+	StressTest
+	</Name>
+	<FunctionID>
+	1
+	</FunctionID>
+	<Vertex>
+	40
+	0.000000
+	</Vertex>
+	<Vertex>
+	50
+	0.500000
+	</Vertex>
+	<Vertex>
+	55
+	0.300000
+	</Vertex>
+	<Vertex>
+	60
+	0.700000
+	</Vertex>
+	<Vertex>
+	65
+	0.300000
+	</Vertex>
+	<Vertex>
+	70
+	0.500000
+	</Vertex>
+	<Vertex>
+	80
+	0.000000
+	</Vertex>
+</Function>

@@ -38,7 +38,6 @@ namespace Genetics {
 		~PitchRule() {}
 
 		float evaluate(char* pitchData, uint32_t count) const;
-		
 	};
 
 	class RhythmRule : public RuleBase {
@@ -57,27 +56,36 @@ namespace Genetics {
 	class IntervalRule : public RuleBase {
 
 	public:
+		IntervalRule(std::shared_ptr<Function> evalFunction, float weight = 1.0f);
 
-	private:
+		IntervalRule(const IntervalRule& source);
+		IntervalRule& operator=(const IntervalRule& rhs);
 
+		~IntervalRule() {}
+
+		float evaluate(uint8_t* intervalData, uint32_t count) const;
+	};
+
+	struct Measure {
+
+		uint8_t* _pitches;
+		uint8_t* _rhythms;
+		uint32_t _numNotes;
 	};
 
 	class MeasureRule : public RuleBase {
 
 	public:
+		MeasureRule(std::shared_ptr<Function> evalFunction, float weight = 1.0f);
 
-	private:
+		MeasureRule(const MeasureRule& source);
+		MeasureRule& operator=(const MeasureRule& rhs);
 
+		~MeasureRule() {}
+
+		float evaluate(Measure* measureData, uint32_t count) const;
 	};
 
 
-	class ModifierBase {
-
-	public:
-		
-
-	private:
-
-	};
 
 } // namespace Genetics

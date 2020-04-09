@@ -2,6 +2,7 @@
 #pragma once
 
 #include "UIElements.h"
+#include <memory>
 
 namespace Genetics {
 
@@ -10,13 +11,13 @@ namespace Genetics {
 	class PhrasePlaybackWindow : public UIElement {
 
 	public:
-		PhrasePlaybackWindow(PhrasePlaybackInterface* interface);
+		PhrasePlaybackWindow(std::unique_ptr<PhrasePlaybackInterface> interface);
 		~PhrasePlaybackWindow();
 
 		void render() override;
 
 	private:
-		PhrasePlaybackInterface* m_interface;
+		std::unique_ptr<PhrasePlaybackInterface> m_interface;
 
 	};
 

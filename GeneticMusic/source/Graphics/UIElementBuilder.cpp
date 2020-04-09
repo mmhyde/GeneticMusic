@@ -17,29 +17,19 @@ namespace Genetics {
 
 	void UIElementBuilder::createUIElements(GeneticAlgorithmController* algorithm, UISystem* gui) {
 
-		PianoRollInterface* pianoInterface = createPianoRollInterface(algorithm);
-		PianoRoll* pianoRoll = new PianoRoll(pianoInterface);
-
+		PianoRoll* pianoRoll = new PianoRoll(createPianoRollInterface(algorithm));
 		gui->addUIElement(pianoRoll);
 		
-		std::unique_ptr<RuleManagerInterface> ruleInterface(createRuleManagerInterface());
-		RuleEditor* ruleEditor = new RuleEditor(std::move(ruleInterface));
-
+		RuleEditor* ruleEditor = new RuleEditor(createRuleManagerInterface());
 		gui->addUIElement(ruleEditor);
 
-		PhraseSelectorInterface* selectorInterface = createSelectorInterface(algorithm);
-		PhraseListViewer* phraseList = new PhraseListViewer(selectorInterface);
-
+		PhraseListViewer* phraseList = new PhraseListViewer(createSelectorInterface(algorithm));
 		gui->addUIElement(phraseList);
 
-		PhrasePlaybackInterface* playbackInterface = createPlaybackInterface(algorithm);
-		PhrasePlaybackWindow* playbackWindow = new PhrasePlaybackWindow(playbackInterface);
-
+		PhrasePlaybackWindow* playbackWindow = new PhrasePlaybackWindow(createPlaybackInterface(algorithm));
 		gui->addUIElement(playbackWindow);
 
-		AlgorithmExecutionInterface* executionInterface = createAlgorithmExecutionInterface(algorithm);
-		AlgorithmExecutionWindow* executionWindow = new AlgorithmExecutionWindow(executionInterface);
-	
+		AlgorithmExecutionWindow* executionWindow = new AlgorithmExecutionWindow(createAlgorithmExecutionInterface(algorithm));
 		gui->addUIElement(executionWindow);
 	}
 

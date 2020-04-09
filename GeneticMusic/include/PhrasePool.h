@@ -7,39 +7,15 @@
 
 namespace Genetics {
 
-	/*
-	class PhrasePool
-	{
-	public:
-		PhrasePool(PoolAllocator<Phrase>& poolAlloc, unsigned measureCount, unsigned subDivision);
-		~PhrasePool();
-
-		void AddPhrase(Phrase* newPhrase);
-		void RemovePhrase(Phrase* oldPhrase);
-
-		Phrase* AllocateEmptyPhrase();
-		const std::vector<Phrase*>& GetPhrases() const;
-
-		void ClearPhrases();
-
-		__inline unsigned GetMeasuresPerPhrase() const { return m_measureCount; }
-		__inline unsigned GetSmallestSubDivision() const { return m_subDivision; }
-		__inline unsigned GetMaxNotes() const { return m_measureCount * m_subDivision; }
-
-		unsigned GetPhraseNumberOf(Phrase* phrase) const;
-
-		void DisplayRatings() const;
-
-	private:
-		std::vector<Phrase*> m_population;
-		PoolAllocator<Phrase>& m_poolAllocator;
-
-		const unsigned m_measureCount; // number of measures per phrase
-		const unsigned m_subDivision;  // smallest subdivision in the phrase
-	};
-	*/
-
 	using PhraseVec = std::vector<Phrase*>;
+
+	struct PhraseFitnessSorter {
+
+		bool operator()(Phrase* lhs, Phrase* rhs) {
+
+			return lhs->_fitnessValue > rhs->_fitnessValue;
+		}
+	};
 
 	struct ElitistPrune {
 

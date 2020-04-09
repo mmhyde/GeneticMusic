@@ -5,6 +5,7 @@
 #include "Fitness/RuleTypes.h"
 
 #include <vector>
+#include <memory>
 
 namespace Genetics {
 
@@ -59,7 +60,7 @@ namespace Genetics {
 		RuleIO m_importRules;
 	};
 
-	RuleManagerInterface* createRuleManagerInterface();
+	std::unique_ptr<RuleManagerInterface> createRuleManagerInterface();
 
 	struct PianoRollInterface {
 
@@ -68,7 +69,7 @@ namespace Genetics {
 		ActivePhraseGettor m_getActivePhrase;
 	};
 
-	PianoRollInterface* createPianoRollInterface(GeneticAlgorithmController* controller);
+	std::unique_ptr<PianoRollInterface> createPianoRollInterface(GeneticAlgorithmController* controller);
 
 	struct PhraseSelectorInterface {
 
@@ -76,18 +77,25 @@ namespace Genetics {
 		typedef Functor<void, uint32_t> ActivePhraseSetter;
 		typedef Functor<Phrase*> ActivePhraseGetter;
 
+		typedef Functor<void, const std::string&, Phrase*> MIDIImporter;
+		typedef Functor<void, const std::string&, Phrase*> MIDIExporter;
+
 		PhraseListReader m_readPhraseList;
 
 		ActivePhraseSetter m_setActivePhrase;
 		ActivePhraseGetter m_getActivePhrase;
+
+		MIDIImporter m_importMIDI;
+		MIDIExporter m_exportMIDI;
 	};
 
-	PhraseSelectorInterface* createSelectorInterface(GeneticAlgorithmController* controller);
+	std::unique_ptr<PhraseSelectorInterface> createSelectorInterface(GeneticAlgorithmController* controller);
 
 	struct PhrasePlaybackInterface {
 
 		typedef Functor<void> PhrasePlayback;
 		typedef Functor<void, SynthesizerBase*> SynthSetting;
+
 
 		PhrasePlayback m_playActivePhrase;
 		PhrasePlayback m_pauseActivePhrase;
@@ -96,7 +104,7 @@ namespace Genetics {
 		SynthSetting m_setPlaybackSynthesizer;
 	};
 
-	PhrasePlaybackInterface* createPlaybackInterface(GeneticAlgorithmController* controller);
+	std::unique_ptr<PhrasePlaybackInterface> createPlaybackInterface(GeneticAlgorithmController* controller);
 
 	struct AlgorithmExecutionInterface {
 
@@ -112,6 +120,6 @@ namespace Genetics {
 		AlgorithmExecute m_runAlgorithm;
 	};
 
-	AlgorithmExecutionInterface* createAlgorithmExecutionInterface(GeneticAlgorithmController* controller);
+	std::unique_ptr<AlgorithmExecutionInterface> createAlgorithmExecutionInterface(GeneticAlgorithmController* controller);
 
 } // namespace Genetics

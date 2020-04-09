@@ -31,8 +31,6 @@ namespace Genetics {
 		std::cout << "GRAPHICS ERROR: " << error << " - " << description << std::endl;
 	}
 
-	RuleManagerInterface* createRuleManagerInterface();
-
 	UISystem::UISystem() {
 
 		if (!glfwInit())

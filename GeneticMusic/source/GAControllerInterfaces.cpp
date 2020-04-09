@@ -7,10 +7,10 @@
 
 namespace Genetics {
 
-	RuleManagerInterface* createRuleManagerInterface() {
+	std::unique_ptr<RuleManagerInterface> createRuleManagerInterface() {
 
 		RuleManager& manager = RuleManager::getRuleManager();
-		RuleManagerInterface* interface_ = new RuleManagerInterface;
+		std::unique_ptr<RuleManagerInterface> interface_ = std::make_unique<RuleManagerInterface>();
 
 		interface_->m_getRuleTypes = RuleManagerInterface::TypeListGettor(&manager, &RuleManager::getRuleTypeList);
 		interface_->m_getModifierTypes = RuleManagerInterface::TypeListGettor(&manager, &RuleManager::getModifierNameList);
@@ -31,44 +31,49 @@ namespace Genetics {
 		interface_->m_importRules = RuleManagerInterface::RuleIO(&manager, &RuleManager::importRules);
 		interface_->m_exportRules = RuleManagerInterface::RuleIO(&manager, &RuleManager::exportRules);
 
+		sizeof(interface_->m_importRules);
+
 		return interface_;
 	}
 
-	PianoRollInterface* createPianoRollInterface(GeneticAlgorithmController* controller) {
+	std::unique_ptr<PianoRollInterface> createPianoRollInterface(GeneticAlgorithmController* controller) {
 
 		typedef GeneticAlgorithmController GAC;
 		typedef PianoRollInterface PRI;
 
-		PRI* interface_ = new PRI;
+		std::unique_ptr<PRI> interface_ = std::make_unique<PRI>();
 
 		interface_->m_getActivePhrase = PRI::ActivePhraseGettor(controller, &GAC::getActivePhrase);
 
 		return interface_;
 	}
 
-	PhraseSelectorInterface* createSelectorInterface(GeneticAlgorithmController* controller) {
+	std::unique_ptr<PhraseSelectorInterface> createSelectorInterface(GeneticAlgorithmController* controller) {
 
 		// Readability typedefs
 		typedef GeneticAlgorithmController GAC;
 		typedef PhraseSelectorInterface PSI;
 
-		PSI* interface_ = new PSI;
+		std::unique_ptr<PSI> interface_ = std::make_unique<PSI>();
 
 		interface_->m_readPhraseList = PSI::PhraseListReader(controller, &GAC::getPhraseList);
 
 		interface_->m_setActivePhrase = PSI::ActivePhraseSetter(controller, &GAC::setActivePhrase);
 		interface_->m_getActivePhrase = PSI::ActivePhraseGetter(controller, &GAC::getActivePhrase);
 
+		interface_->m_importMIDI = PSI::MIDIImporter(controller, &GAC::importMIDIToPhrase);
+		interface_->m_exportMIDI = PSI::MIDIExporter(controller, &GAC::exportPhraseToMIDI);
+
 		return interface_;
 	}
 
-	PhrasePlaybackInterface* createPlaybackInterface(GeneticAlgorithmController* controller) {
+	std::unique_ptr<PhrasePlaybackInterface> createPlaybackInterface(GeneticAlgorithmController* controller) {
 
 		// Readability typedefs
 		typedef GeneticAlgorithmController GAC;
 		typedef PhrasePlaybackInterface PPI;
 
-		PPI* interface_ = new PPI;
+		std::unique_ptr<PPI> interface_ = std::make_unique<PPI>();
 
 		interface_->m_playActivePhrase = PPI::PhrasePlayback(controller, &GAC::playCurrentlySelectedPhrase);
 		interface_->m_pauseActivePhrase = PPI::PhrasePlayback(controller, &GAC::pauseCurrentlySelectedPhrase);
@@ -79,13 +84,13 @@ namespace Genetics {
 		return interface_;
 	}
 
-	AlgorithmExecutionInterface* createAlgorithmExecutionInterface(GeneticAlgorithmController* controller) {
+	std::unique_ptr<AlgorithmExecutionInterface> createAlgorithmExecutionInterface(GeneticAlgorithmController* controller) {
 
 		// Readability typedefs
 		typedef GeneticAlgorithmController GAC;
 		typedef AlgorithmExecutionInterface AEI;
 
-		AEI* interface_ = new AEI;
+		std::unique_ptr<AEI> interface_ = std::make_unique<AEI>();
 
 		interface_->m_setIterationCount = AEI::AlgorithmSetter(controller, &GAC::setIterationCount);
 		interface_->m_setPopulationSize = AEI::AlgorithmSetter(controller, &GAC::setPhrasePoolSize);
