@@ -44,18 +44,16 @@ namespace Genetics {
 			newPhrase->_melodicNotes  = 0;
 			newPhrase->_melodicData   = new char[maxNotes];
 			newPhrase->_melodicRhythm = new char[maxNotes];
-			/*
-			newPhrase->_chordCount  = 0;
-			newPhrase->_chordData   = new Triad[maxNotes];
-			newPhrase->_chordRhythm = new Triad[maxNotes];
-			*/
+
+			newPhrase->_harmonicNotes = 0;
+			newPhrase->_harmonicData  = new Chord[m_measureCount * 4];
+
 			// Set all arrays to 0
 			std::memset(newPhrase->_melodicData,   0, maxNotes);
 			std::memset(newPhrase->_melodicRhythm, 0, maxNotes);
-			/*
-			std::memset(newPhrase->_chordData,   0, maxNotes * sizeof(Triad));
-			std::memset(newPhrase->_chordRhythm, 0, maxNotes * sizeof(Triad));
-			*/
+
+			std::memset(newPhrase->_harmonicData,  0, m_measureCount * 4 * sizeof(Chord));
+
 			m_childPopulation.push_back(newPhrase);
 		}
 		return newPhrase;

@@ -58,6 +58,7 @@ namespace Genetics {
 		extractorVec[ext_Rhythm]   = new RhythmExtractor(m_ruleTable.getRuleList<RhythmRule>(ext_Rhythm));
 		extractorVec[ext_Interval] = new IntervalExtractor(m_ruleTable.getRuleList<IntervalRule>(ext_Interval));
 		extractorVec[ext_Measure]  = new MeasureExtractor(m_ruleTable.getRuleList<MeasureRule>(ext_Measure));
+		extractorVec[ext_Chord]    = new ChordExtractor(m_ruleTable.getRuleList<ChordRule>(ext_Chord));
 	}
 
 	// Add / Remove rules and rule components from the manager
@@ -184,6 +185,7 @@ namespace Genetics {
 		ruleTypeList.emplace_back("Rhythm Rule");
 		ruleTypeList.emplace_back("Interval Rule");
 		ruleTypeList.emplace_back("Measure Rule");
+		ruleTypeList.emplace_back("Chord Rule");
 
 		return ruleTypeList;
 	}

@@ -181,8 +181,12 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClInclude Include="include\AudioPlayback\AudioEngine.h" />
     <ClInclude Include="include\AudioPlayback\SynthesizerBase.h" />
     <ClInclude Include="include\Breeding\Breeder.h" />
+    <ClInclude Include="include\ChordDefinitions.h" />
     <ClInclude Include="include\FileIO\FitnessFiles.h" />
+    <ClInclude Include="include\Fitness\Modifiers\MaxRepeatedModifier.h" />
     <ClInclude Include="include\Fitness\Modifiers\ModifierBase.h" />
+    <ClInclude Include="include\Fitness\Modifiers\OccurencesModifier.h" />
+    <ClInclude Include="include\Fitness\Modifiers\SimilarityModifier.h" />
     <ClInclude Include="include\Fitness\RuleTable.h" />
     <ClInclude Include="include\Fitness\RuleList.h" />
     <ClInclude Include="include\Fitness\RuleManager.h" />

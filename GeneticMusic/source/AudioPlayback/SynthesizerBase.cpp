@@ -5,78 +5,142 @@
 
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
-namespace Genetics
-{
+namespace Genetics {
 
 	constexpr float ATTACK_TIME  = 0.01f;
 	constexpr float DECAY_TIME   = 0.05f;
-	constexpr float SUSTAIN_GAIN = 0.75f;
+	constexpr float SUSTAIN_GAIN = 0.60f;
 	constexpr float RELEASE_TIME = 0.05f;
+
+	constexpr float MIDI_A440    = 69.0f;
 
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
 	SynthesizerBase::SynthesizerBase(unsigned rate, const MeterInfo& meterData)
 		: m_samplesPerNote(SamplesPerNoteLength(rate, meterData)), m_sampleRate(rate),
-		m_attackT(ATTACK_TIME), m_decayT(DECAY_TIME), m_sustainLevel(SUSTAIN_GAIN), m_releaseT(RELEASE_TIME),
-		m_envelopeArchetype(m_attackT * rate, m_decayT * rate, m_sustainLevel, m_releaseT * rate),
-		m_outputSynth(440.0f, rate, m_envelopeArchetype)
-	{
+		  m_attackT(ATTACK_TIME), m_decayT(DECAY_TIME), m_sustainLevel(SUSTAIN_GAIN), m_releaseT(RELEASE_TIME),
+		  m_envelopeArchetype(m_attackT * rate, m_decayT * rate, m_sustainLevel, m_releaseT * rate),
+		  m_outputSynth(440.0f, rate, m_envelopeArchetype) {
+
+		// Allocate a temp buffer for generating samples
+		m_tempBuffer = new float[m_samplesPerNote * Phrase::_smallestSubdivision];
 	}
 
 #pragma warning(pop)
 
-	SynthesizerBase::~SynthesizerBase()
-	{
+	SynthesizerBase::~SynthesizerBase() {
+
+		// Check memory is valid before calling delete
+		if (m_tempBuffer != nullptr) {
+
+			delete[] m_tempBuffer;
+			m_tempBuffer = nullptr;
+		}
 	}
 
-	void SynthesizerBase::Initialize()
-	{
+	void SynthesizerBase::Initialize() {
+	
 	}
 
 	// This function assigns an output array to the outputPtr and returns the number of samples
-	unsigned SynthesizerBase::RenderMIDI(float** outputPtr, const Phrase* phrase, 
-		                                 unsigned measureCount, unsigned subdivision)
-	{
+	uint32_t SynthesizerBase::renderMIDI(float** outputPtr, const Phrase* phrase) {
+
 		// Allocate an output buffer with extra samples on the end for safety
-		unsigned numSamples = m_samplesPerNote * (measureCount + 1) * subdivision;
+		uint32_t numSamples = m_samplesPerNote * (Phrase::_numMeasures + 1) * Phrase::_smallestSubdivision;
 		float* outputBuffer = new float[numSamples];
+		uint32_t sampleIndex = 0;
+
 		// Memset to zero to handle silence correctly
-		std::memset(outputBuffer, 0, sizeof(float) * measureCount * subdivision * m_samplesPerNote);
+		std::memset(outputBuffer, 0, sizeof(float) * Phrase::_numMeasures * Phrase::_smallestSubdivision * m_samplesPerNote);
 
-		unsigned maxIndex = measureCount * subdivision;
-		unsigned sampleIndex = 0;
-		for (unsigned i = 0; i < maxIndex;)
-		{
-			// Grab the current pitch value
-			unsigned char currPitch = phrase->_melodicData[i];
-			unsigned char currLength = phrase->_melodicRhythm[i];
+		// sample length of the chord
+		const uint32_t harmonySamples = m_samplesPerNote * ChordRhythm;
+		uint8_t previousPitch = 0;
 
-			// Move index forward by the number 
-			i += currLength;
+		// Loop over the phrase data
+		uint32_t maxIdx = Phrase::_numMeasures * Phrase::_smallestSubdivision;
+		for (uint32_t i = 0; i < maxIdx;) {
 
-			unsigned noteSamples = m_samplesPerNote * currLength;
+			// Grab current pitch value
+			uint8_t currentPitch = phrase->_melodicData[i];
+			uint8_t currentRhythm = phrase->_melodicRhythm[i];
 
-			// If this note is a rest just move the index along and skip over the rest of the loop
-			if (currPitch == 0) {
-				sampleIndex += noteSamples;
-				continue;
+			// sample length of the current melody note
+			const uint32_t melodySamples = m_samplesPerNote * currentRhythm;
+
+			// Generate the note as long as it isn't a rest
+			if (currentPitch != 0) {
+
+				generateAndAddPitch(outputBuffer + sampleIndex, currentPitch, melodySamples, 0.6f);
 			}
 
-			// Calculate the frequency of the next note
-			float frequency = 440.0f * static_cast<float>(std::pow(2.0, (double)(currPitch - 69.0) / 12.0));
+			// Check if this is the start of a chord (on a quarter note)
+			if (i % ChordRhythm == 0) {
 
-			// Set the frequency on the synth and generate the samples
-			m_outputSynth.SetFrequency(frequency, m_sampleRate);
-			m_outputSynth.GenerateSamples(outputBuffer + sampleIndex, noteSamples);
+				const Chord& currentChord = phrase->_harmonicData[i / ChordRhythm];
 
-			// Update index variables
-			sampleIndex += noteSamples;
-		}
+				// If the current melody note is a rest, use the last pitch
+				if (currentPitch == 0) { currentPitch = previousPitch; }
+
+				// Calculate root, third, and fifth
+				uint8_t root = calculateRootNote(currentPitch, currentChord);
+				uint8_t third = root + NumeralSemitones[ChordNumeral::III];
+				uint8_t fifth = root + NumeralSemitones[ChordNumeral::  V];
+
+				applyChordType(currentChord._type, third, fifth);
+
+				// Add root to output buffer
+				generateAndAddPitch(outputBuffer + sampleIndex, root , harmonySamples, 0.30f);
+
+				// Add third to output buffer
+				generateAndAddPitch(outputBuffer + sampleIndex, third, harmonySamples, 0.15f);
+
+				// Add fifth to output buffer
+				generateAndAddPitch(outputBuffer + sampleIndex, fifth, harmonySamples, 0.15f);
+
+				// Set pitch history
+				previousPitch = currentPitch;
+			}
+
+			// Increment phrase note and sample index by the smaller of the two rhythms; ensures we don't miss any notes
+			if (currentRhythm == 0) {
+
+				i += ChordRhythm;
+				sampleIndex += ChordRhythm;
+			}
+			else {
 		
+				i += std::min(ChordRhythm, currentRhythm);
+				sampleIndex += std::min(melodySamples, harmonySamples);
+			}
+		}
+
+		for (uint32_t i = 0; i < sampleIndex; ++i) {
+
+			outputBuffer[i] *= 0.5f;
+		}
+
 		*outputPtr = outputBuffer;
 		return sampleIndex;
+	}
+
+	void SynthesizerBase::generateAndAddPitch(float* output, uint8_t pitch, uint32_t numSamples, float gain) {
+
+		// Determine frequency of root note and generate
+		double exponent = static_cast<double>(pitch - MIDI_A440) / static_cast<double>(OctaveInterval);
+		float frequency = 440.0f * static_cast<float>(std::pow(2.0, exponent));
+
+		m_outputSynth.SetFrequency(frequency, m_sampleRate);
+		m_outputSynth.GenerateSamples(m_tempBuffer, numSamples);
+
+		// Add root to output buffer
+		for (uint32_t sample = 0; sample < numSamples; ++sample) {
+
+			output[sample] += (m_tempBuffer[sample] * gain);
+		}
 	}
 
 	const double PI = 4.0 * std::atan(1.0);

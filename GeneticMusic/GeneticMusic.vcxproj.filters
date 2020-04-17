@@ -165,6 +165,18 @@
     <ClInclude Include="include\Fitness\Modifiers\ModifierBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Fitness\Modifiers\SimilarityModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fitness\Modifiers\OccurencesModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fitness\Modifiers\MaxRepeatedModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChordDefinitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp">

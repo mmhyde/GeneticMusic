@@ -3,12 +3,16 @@
 #pragma once
 
 #include "Graphics/UIElements.h"
+
 #include <memory>
+#include <cstdint>
 
 namespace Genetics {
 
 	struct Phrase;
 	struct PianoRollInterface;
+
+	typedef unsigned int ImU32;
 
 	class PianoRoll : public UIElement {
 
@@ -25,6 +29,7 @@ namespace Genetics {
 		void DrawPhraseOnGrid();
 		void DrawScrollBars();
 
+		void renderNote(const short numBoxes, const float xCoord, const uint8_t pitch, const ImU32 barColor) const;
 		float GetYCoordOfKey(short keyNumber) const;
 
 		struct Key {

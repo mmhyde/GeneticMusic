@@ -9,6 +9,8 @@ namespace Genetics {
 		ext_Rhythm,
 		ext_Interval,
 		ext_Measure,
+		ext_Chord,
+		//ext_Progression,
 		ext_ExtractorCount
 	};
 

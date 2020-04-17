@@ -9,6 +9,8 @@ namespace Genetics {
 	class ModifierBase;
 	class RuleManager;
 
+	struct Chord; // Forward declaration
+
 	class RuleBase {
 
 	public:
@@ -86,6 +88,30 @@ namespace Genetics {
 		float evaluate(Measure* measureData, uint32_t count) const;
 	};
 
+	class ChordRule : public RuleBase {
 
+	public:
+		ChordRule(std::shared_ptr<Function> evalFunction, float weight = 1.0f);
+		
+		ChordRule(const ChordRule& source);
+		ChordRule& operator=(const ChordRule& rhs);
+
+		~ChordRule() {}
+
+		float evaluate(uint8_t* chordData, uint32_t count) const;
+	};
+
+	class ProgressionRule : public RuleBase {
+
+	public:
+		ProgressionRule(std::shared_ptr<Function> evalFunction, float weight = 1.0f);
+
+		ProgressionRule(const ProgressionRule& source);
+		ProgressionRule& operator=(const ProgressionRule& rhs);
+
+		~ProgressionRule() {}
+
+		float evaluate(Chord* chordData, uint32_t count) const;
+	};
 
 } // namespace Genetics

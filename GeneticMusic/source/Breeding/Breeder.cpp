@@ -6,84 +6,6 @@
 
 namespace Genetics {
 
-	Breeder::Breeder()
-		: m_tempBuffer(nullptr), m_tempBufferSize(0)
-	{
-		std::random_device rd;
-		m_randomEngine.seed(rd());
-	}
-
-	Breeder::~Breeder()
-	{
-
-	}
-
-	void Breeder::Breed(const BreedingPair& phraseParents, unsigned measureCount, unsigned subdivision)
-	{
-		Phrase* parentA = phraseParents.first;
-		Phrase* parentB = phraseParents.second;
-
-		unsigned measureHalfWidth = (subdivision / 2);
-		if (measureHalfWidth > m_tempBufferSize) {
-
-			if (m_tempBuffer) { delete[] m_tempBuffer; }
-			m_tempBuffer = new char[measureHalfWidth];
-			m_tempBufferSize = measureHalfWidth;
-		}
-		
-		for (unsigned measure = 0; measure < measureCount; ++measure) {
-
-			int measureIndex = measure * subdivision;
-
-			// If either of the two measures contain a wholenote, we can't perform a cross point
-			// breeding operation and need to do something special
-			if (parentA->_melodicRhythm[measureIndex] == subdivision ||
-				parentB->_melodicRhythm[measureIndex] == subdivision) {
-
-				// The special thing we do is to do nothing
-				continue;
-			}
-
-			// No weird edge cases we do a basic crossover breeding operation
-			// memcpy the second half of parentA's measure into parentB and vice versa
-
-			// Copy melodic information
-			char* parentAData = parentA->_melodicData + measureIndex;
-			char* parentBData = parentB->_melodicData + measureIndex;
-
-			// Determine number of notes in the two halves
-			unsigned parentAHalfNotes = 0;
-			unsigned parentBHalfNotes = 0;
-			for (unsigned i = 0; i < measureHalfWidth; ++i) {
-				if (parentAData[i] != 0) {
-					++parentAHalfNotes;
-				}
-				if (parentBData[i] != 0) {
-					++parentBHalfNotes;
-				}
-			}
-
-			parentA->_melodicNotes -= parentAHalfNotes;
-			parentA->_melodicNotes += parentBHalfNotes;
-
-			parentB->_melodicNotes -= parentBHalfNotes;
-			parentB->_melodicNotes += parentAHalfNotes;
-
-			std::memcpy(m_tempBuffer, parentAData,  measureHalfWidth);
-			std::memcpy(parentAData,  parentBData,  measureHalfWidth);
-			std::memcpy(parentBData,  m_tempBuffer, measureHalfWidth);
-
-			// Copy rhythmic information
-			parentAData = parentA->_melodicRhythm + measureIndex;
-			parentBData = parentB->_melodicRhythm + measureIndex;
-
-			std::memcpy(m_tempBuffer, parentAData,  measureHalfWidth);
-			std::memcpy(parentAData,  parentBData,  measureHalfWidth);
-			std::memcpy(parentBData,  m_tempBuffer, measureHalfWidth);
-		}
-	}
-
-
 	void CrosspointBreed::CreateChildren(const BreedingPair& parents, PhrasePool* phrasePool) {
 
 		Phrase* parentA = parents.first;
@@ -281,6 +203,15 @@ namespace Genetics {
 				note1 = note2;
 			}
 		}
+
+		// Copy the better parent's chord progression don't try to interpolate it
+		if (parent1->_fitnessValue > parent2->_fitnessValue) {
+			std::memcpy(child->_harmonicData, parent1->_harmonicData, sizeof(Chord) * parent1->_harmonicNotes);
+		}
+		else {
+			std::memcpy(child->_harmonicData, parent2->_harmonicData, sizeof(Chord) * parent1->_harmonicNotes);
+		}
+		child->_harmonicNotes = parent1->_harmonicNotes;
 
 		//std::cout << "Num Child Notes: " << child->_melodicNotes << std::endl;
 	}

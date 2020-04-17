@@ -79,7 +79,7 @@ namespace Genetics {
 			if (m_activeSound.isAvailable()) {
 
 				float* tempBuffer = nullptr;
-				uint32_t bufferLen = m_outputSynth->RenderMIDI(&tempBuffer, measure, Phrase::_numMeasures, Phrase::_smallestSubdivision);
+				uint32_t bufferLen = m_outputSynth->renderMIDI(&tempBuffer, measure);
 
 				m_activeSound.setSource(tempBuffer, bufferLen, 1);
 				m_activeSound.play();

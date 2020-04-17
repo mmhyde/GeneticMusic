@@ -310,54 +310,74 @@ namespace Genetics {
 		drawList->AddRectFilled(rightCoverMin, rightCoverMax, timelineBackground);
 	}
 
-	ImU32 noteColor = IM_COL32(255, 100, 100, 255);
+	ImU32 noteColor  = IM_COL32(255, 100, 100, 255);
+	ImU32 chordColor = IM_COL32(100, 149, 237, 255);
 
 	void PianoRoll::DrawPhraseOnGrid() {
 
 		Phrase* activePhrase = m_interface->m_getActivePhrase();
 
-		if (!activePhrase) {
-
-			return;
-		}
+		if (!activePhrase) { return; }
 
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
+		drawList->ChannelsSetCurrent(e_midBackground);
+		float currentXCoord = ImGui::GetCursorScreenPos().x + Key::m_keyWidth;
 
 		char* rhythm  = activePhrase->_melodicRhythm;
 		char* pitches = activePhrase->_melodicData;
-		int noteIndex = 0;
-		unsigned numNotes = activePhrase->_melodicNotes;
-		float currentXCoord = ImGui::GetCursorScreenPos().x + Key::m_keyWidth;
 
-		float noteHeight = Key::m_keyHeight * blackKeyHeightRatio;
+		// Render chord notes first
+		constexpr uint16_t chordBoxes = ChordRhythm; // Chords are hardcoded as quarter note length
+		uint8_t previousPitch = 0;
 
-		float lineIndent = 6.0f;
-		float lineHeight = 0.7f * noteHeight;
+		for (uint32_t i = 0, noteIdx = 0; i < activePhrase->_harmonicNotes; ++i) {
 
-		drawList->ChannelsSetCurrent(e_midBackground);
+			// Setup variables
+			uint8_t pitch = pitches[noteIdx];
+			const Chord& currentChord = activePhrase->_harmonicData[i];
 
-		for (unsigned i = 0; i < numNotes; ++i) {
+			// If there's no pitch on this quarter just use the previous one
+			if (pitch == 0) { pitch = previousPitch; }
 
-			short numBoxes = rhythm[noteIndex];
-			short pitchNumber = pitches[noteIndex];
+			// Determine root note
+			uint8_t root = calculateRootNote(pitch, currentChord);
 
-			noteIndex += numBoxes;
+			// Calculate third and fifth above the root
+			uint8_t third = root + NumeralSemitones[ChordNumeral::III];
+			uint8_t fifth = root + NumeralSemitones[ChordNumeral::V];
+
+			// Apply the chord type to the third and fifth
+			applyChordType(currentChord._type, third, fifth);
+
+			// Render each note on the timeline //
+			renderNote(chordBoxes, currentXCoord, root, chordColor); // Render root 	
+			renderNote(chordBoxes, currentXCoord, third, chordColor); // Render third
+			renderNote(chordBoxes, currentXCoord, fifth, chordColor); // Render fifth
+
+			// Setup for next loop iteration
+			previousPitch = pitch;
+			noteIdx += ChordRhythm;
+			currentXCoord += chordBoxes * m_gridThickness;
+		}
+
+		// Reset X coordinate position
+		currentXCoord = ImGui::GetCursorScreenPos().x + Key::m_keyWidth;
+
+		// Render melodic line
+		uint32_t numNotes = activePhrase->_melodicNotes;
+
+		for (uint32_t i = 0, noteIndex = 0; i < numNotes; ++i) {
+
+			const uint16_t numBoxes   = rhythm[noteIndex];
+			const uint8_t pitchNumber = pitches[noteIndex];
 
 			// Don't render a rest note
 			if (pitchNumber != 0) {
 
-				ImVec2 noteDim = { numBoxes * m_gridThickness, noteHeight };
-				ImVec2 noteCorner = { currentXCoord + m_scrollingX, GetYCoordOfKey(pitchNumber) + m_scrollingY };
-
-				drawList->AddRectFilled(noteCorner, noteCorner + noteDim, noteColor, 2.5f);
-				drawList->AddRect(noteCorner, noteCorner + noteDim, IM_COL32_BLACK, 2.5f, 15, 1.5f);
-
-				ImVec2 lineTop = { noteCorner.x + lineIndent, noteCorner.y + (noteHeight - lineHeight) / 2.0f };
-				ImVec2 lineBottom = { lineTop.x, lineTop.y + lineHeight };
-				drawList->AddLine(lineTop, lineBottom, IM_COL32_WHITE, 2.0f);
-
+				renderNote(numBoxes, currentXCoord, pitchNumber, noteColor);
 			}
 
+			noteIndex += numBoxes;
 			currentXCoord += numBoxes * m_gridThickness;
 		}
 	}
@@ -512,6 +532,25 @@ namespace Genetics {
 		return keyCandidate.m_yPos;
 	}
 
+	void PianoRoll::renderNote(const short numBoxes, const float xCoordinate, 
+							   const uint8_t pitch, const ImU32 barColor = IM_COL32_BLACK) const {
 
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+		const     float noteHeight = Key::m_keyHeight * blackKeyHeightRatio;
+
+		constexpr float lineIndent = 6.0f;
+		const     float lineHeight = 0.7f * noteHeight;
+
+		ImVec2 noteDim = { numBoxes * m_gridThickness, noteHeight };
+		ImVec2 noteCorner = { xCoordinate + m_scrollingX, GetYCoordOfKey(pitch) + m_scrollingY };
+
+		drawList->AddRectFilled(noteCorner, noteCorner + noteDim, barColor, 2.5f);
+		drawList->AddRect(noteCorner, noteCorner + noteDim, IM_COL32_BLACK, 2.5f, 15, 1.5f);
+
+		ImVec2 lineTop = { noteCorner.x + lineIndent, noteCorner.y + (noteHeight - lineHeight) / 2.0f };
+		ImVec2 lineBottom = { lineTop.x, lineTop.y + lineHeight };
+		drawList->AddLine(lineTop, lineBottom, IM_COL32_WHITE, 2.0f);
+	}
 
 } // namespace Genetics

@@ -10,34 +10,17 @@ namespace Genetics {
 	struct Phrase;
 	typedef std::pair<Phrase*, Phrase*> BreedingPair;
 
-	class Breeder
-	{
-	public:
-		Breeder();
-		~Breeder();
-
-		void Breed(const BreedingPair& parents, unsigned measureCount, unsigned subdivision);
-
-	private:
-		std::mt19937 m_randomEngine;
-
-		char* m_tempBuffer;
-		unsigned m_tempBufferSize;
-
-	};
-
 	struct CrosspointBreed {
 
 		CrosspointBreed() 
 			: m_tempBuffer(new char[256]), m_tempBufferSize(256) { 
-			
 		}
 
 		~CrosspointBreed() { 
 
 			if (m_tempBuffer != nullptr) {
 
-				delete[] m_tempBuffer;
+				delete[] m_tempBuffer; m_tempBuffer = nullptr;
 			}
 		}
 
@@ -45,7 +28,6 @@ namespace Genetics {
 		void CreateChildren(const BreedingPair& parents, PhrasePool* phrasePool);
 
 	private:
-
 		char* m_tempBuffer;
 		unsigned m_tempBufferSize;
 	};
@@ -55,15 +37,13 @@ namespace Genetics {
 	protected:
 		InterpolateBreed() {
 
-			std::random_device rd;
-			m_randomEngine.seed(rd());
+			std::random_device rd; m_randomEngine.seed(rd());
 		}
 
 		void CreateChildren(const BreedingPair& parents, PhrasePool* phrasePool);
 	
 	private:
 		std::mt19937 m_randomEngine;
-
 	};
 
 	template <class Policy>
@@ -78,18 +58,14 @@ namespace Genetics {
 	private:
 		std::mt19937 m_randomEngine;
 		char* m_tempBuffer;
-
-
 	};
 
 	template <class Policy>
 	BreedingMethod<Policy>::BreedingMethod() {
-
 	}
 
 	template <class Policy>
 	BreedingMethod<Policy>::~BreedingMethod() {
-
 	}
 	
 	template <class Policy>

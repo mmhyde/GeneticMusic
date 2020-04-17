@@ -8,13 +8,6 @@ namespace Genetics {
 	RuleTable::RuleTable(const uint16_t maxRulesPerType)
 		: m_maxRules(maxRulesPerType * ext_ExtractorCount) {
 
-		// Verify the rules stored in the table are correctly sized for the union
-		static_assert(sizeof(RuleBase) == sizeof(PitchRule)
-			&& sizeof(PitchRule) == sizeof(RhythmRule)
-			&& sizeof(PitchRule) == sizeof(IntervalRule) 
-			&& sizeof(PitchRule) == sizeof(MeasureRule)
-			, "RuleTable requires all rules to be exactly the same size");
-
 		// Allocate memory for the actual rules
 		char* ruleMemory = new char[m_maxRules * sizeof(RuleBase)];
 		m_ruleStorage = reinterpret_cast<RuleBase*>(ruleMemory);
@@ -124,7 +117,8 @@ namespace Genetics {
 		RuleConstructImpl::constructRule<PitchRule>,
 		RuleConstructImpl::constructRule<RhythmRule>,
 		RuleConstructImpl::constructRule<IntervalRule>,
-		RuleConstructImpl::constructRule<MeasureRule>
+		RuleConstructImpl::constructRule<MeasureRule>,
+		RuleConstructImpl::constructRule<ChordRule>
 	};
 
 	// Array to hold methods for destructing each type of rule
@@ -133,7 +127,8 @@ namespace Genetics {
 		RuleConstructImpl::destructRule<PitchRule>,
 		RuleConstructImpl::destructRule<RhythmRule>,
 		RuleConstructImpl::destructRule<IntervalRule>,
-		RuleConstructImpl::destructRule<MeasureRule>
+		RuleConstructImpl::destructRule<MeasureRule>,
+		RuleConstructImpl::destructRule<ChordRule>
 	};
 
 	RuleTable::RuleControl::RuleControl(RuleType ruleType, RuleBase* memoryAddr)

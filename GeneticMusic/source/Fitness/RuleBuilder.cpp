@@ -7,13 +7,11 @@ namespace Genetics {
 
 	RuleBase::RuleBase(std::shared_ptr<Function> function, float weight)
 		: m_evaluationFunction(function), m_ruleWeight(weight) {
-
 	}
 
 	RuleBase::RuleBase(const RuleBase& source)
 		: m_evaluationFunction(source.m_evaluationFunction), m_modifier(source.m_modifier),
 		  m_ruleWeight(source.m_ruleWeight) {
-
 	}
 
 	RuleBase& RuleBase::operator=(const RuleBase& rhs) {
@@ -26,22 +24,22 @@ namespace Genetics {
 	}
 
 	void RuleBase::setNewWeight(float weight) {
+
 		weight = (weight > 1.0f) ? 1.0f : ((weight < 0.0f) ? 0.0f : weight);
 		m_ruleWeight = weight;
 	}
 
-
+	// Pitch Rule Implementation //
 	PitchRule::PitchRule(std::shared_ptr<Function> function, float weight)
 		: RuleBase(function, weight) {
-
 	}
 
 	PitchRule::PitchRule(const PitchRule& source)
 		: RuleBase(source) {
-
 	}
 
 	PitchRule& PitchRule::operator=(const PitchRule& rhs) {
+
 		RuleBase::operator=(rhs);
 		return *this;
 	}
@@ -57,15 +55,13 @@ namespace Genetics {
 		return total / static_cast<float>(count);
 	}
 
-
+	// Rhythm Rule Implementation //
 	RhythmRule::RhythmRule(std::shared_ptr<Function> evalFunction, float weight)
 		: RuleBase(evalFunction, weight) {
-
 	}
 
 	RhythmRule::RhythmRule(const RhythmRule& source)
 		: RuleBase(source) {
-
 	}
 
 	RhythmRule& RhythmRule::operator=(const RhythmRule& rhs) {
@@ -85,15 +81,13 @@ namespace Genetics {
 		return total / static_cast<float>(count);
 	}
 
-
+	// Interval Rule Implementation //
 	IntervalRule::IntervalRule(std::shared_ptr<Function> evalFunction, float weight)
 		: RuleBase(evalFunction, weight) {
-
 	}
 
 	IntervalRule::IntervalRule(const IntervalRule& source)
 		: RuleBase(source) {
-
 	}
 
 	IntervalRule& IntervalRule::operator=(const IntervalRule& rhs) {
@@ -113,15 +107,13 @@ namespace Genetics {
 		return total / static_cast<float>(count);
 	}
 
-
+	// Measure Rule Implementation // 
 	MeasureRule::MeasureRule(std::shared_ptr<Function> evalFunction, float weight)
 		: RuleBase(evalFunction, weight) {
-
 	}
 
 	MeasureRule::MeasureRule(const MeasureRule& source)
 		: RuleBase(source) {
-
 	}
 
 	MeasureRule& MeasureRule::operator=(const MeasureRule& rhs) {
@@ -148,6 +140,54 @@ namespace Genetics {
 		}
 
 		return total / static_cast<float>(count);
+	}
+
+	// Chord Rule Implementation //
+	ChordRule::ChordRule(std::shared_ptr<Function> evalFunction, float weight)
+		: RuleBase(evalFunction, weight) {
+	}
+
+	ChordRule::ChordRule(const ChordRule& source)
+		: RuleBase(source) {
+	}
+
+	ChordRule& ChordRule::operator=(const ChordRule& rhs) {
+
+		RuleBase::operator=(rhs);
+		return *this;
+	}
+
+	float ChordRule::evaluate(uint8_t* chordData, uint32_t count) const {
+
+		float total = 0.0f;
+		for (uint32_t i = 0; i < count; ++i) {
+
+			total += (*m_evaluationFunction)(chordData[i]);
+		}
+
+		return total / static_cast<float>(count);
+	}
+
+	// Progression Rule Implementation //
+	ProgressionRule::ProgressionRule(std::shared_ptr<Function> evalFunction, float weight)
+		: RuleBase(evalFunction, weight) {
+	}
+
+	ProgressionRule::ProgressionRule(const ProgressionRule& source)
+		: RuleBase(source) {
+	}
+
+	ProgressionRule& ProgressionRule::operator=(const ProgressionRule& rhs) {
+
+		RuleBase::operator=(rhs);
+		return *this;
+	}
+
+	// This one geta more complex, using potentially a different type of function
+	float ProgressionRule::evaluate(Chord* chordData, uint32_t count) const {
+
+		
+		return 0.0f;
 	}
 
 } // namespace Genetics

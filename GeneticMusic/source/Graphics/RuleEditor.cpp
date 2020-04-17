@@ -348,7 +348,7 @@ namespace Genetics {
 
 			bool enterHit = ImGui::InputText("FileName", &(exportPath.front()), exportPath.size(), ImGuiInputTextFlags_EnterReturnsTrue);
 
-			if (ImGui::Button("Export")) {
+			if (ImGui::Button("Export") || enterHit) {
 
 				std::string toSave = exportPath.substr(0, exportPath.find('\0'));
 				toSave.append(".xml");

@@ -30,10 +30,10 @@ namespace Genetics {
 			short subDivMin;
 		};
 
-		void GenerateMelodic(Phrase* phrase, unsigned phraseLen, unsigned subDiv);
-		void GenerateHarmonic(Phrase* phrase, unsigned phraseLen, unsigned subDiv);
+		void generateMelodic(Phrase* phrase, unsigned numMeasures, unsigned subDiv);
+		void generateHarmonic(Phrase* phrase, unsigned numMeasures, unsigned subDiv);
 
-		void SubdivisionPattern(std::vector<char>& pattern, const SubdivisionInfo& info, short layer, float density);
+		void subdivisionPattern(std::vector<char>& pattern, const SubdivisionInfo& info, short layer, float density);
 
 		PhraseConfig m_configuration;
 		unsigned m_populationSize;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace Genetics {
 
 	struct MeterInfo;
@@ -31,9 +33,10 @@ namespace Genetics {
 		void Initialize();
 
 		// This function assigns an output array to the outputPtr and returns the number of samples
-		unsigned RenderMIDI(float** outputPtr, const Phrase* noteList, unsigned measureCount, unsigned subDivision);
+		virtual uint32_t renderMIDI(float** outputPtr, const Phrase* noteList);
 
 	private:
+		void generateAndAddPitch(float* output, uint8_t pitch, uint32_t numSamples, float gain = 1.0f);
 
 		// Sine wave generator
 		struct SineVoice {
@@ -58,6 +61,7 @@ namespace Genetics {
 
 		Envelope m_envelopeArchetype;
 		SineVoice m_outputSynth;
+		float* m_tempBuffer;
 
 		const unsigned m_sampleRate;
 		const unsigned m_samplesPerNote;

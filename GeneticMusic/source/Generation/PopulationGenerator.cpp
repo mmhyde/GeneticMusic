@@ -6,6 +6,7 @@
 
 #include "Generation/PopulationGenerator.h"
 #include "PhrasePool.h"
+#include "ChordDefinitions.h"
 
 #include <iostream>
 #include <iomanip>
@@ -42,15 +43,15 @@ namespace Genetics {
 		{
 			Phrase* newPhrase = newPhrasePool->AllocateChild();
 
-			// v Logic for how to fill the phrase with actual notes goes here v
+			// Logic for how to fill the phrase with actual notes goes here
 			unsigned phraseLen = m_configuration.numMeasures;
 			unsigned smallestSubDiv = m_configuration.smallestSubdivision;
 			
-			GenerateMelodic(newPhrase, phraseLen, smallestSubDiv);
+			// Generate initial melody notes
+			generateMelodic(newPhrase, phraseLen, smallestSubDiv);
 
-			GenerateHarmonic(newPhrase, phraseLen, smallestSubDiv);
-
-			// ^ ------------------------------------------------------------ ^
+			// Generate initial harmonic notes
+			generateHarmonic(newPhrase, phraseLen, smallestSubDiv);
 		}
 
 		newPhrasePool->MergeChildrenToPopulation<GenerationalPrune>();
@@ -59,8 +60,7 @@ namespace Genetics {
 	}
 
 
-
-	void PopulationGenerator::GenerateMelodic(Phrase* phrase, unsigned phraseLen, unsigned subDiv)
+	void PopulationGenerator::generateMelodic(Phrase* phrase, unsigned numMeasures, unsigned subDiv)
 	{
 		// 1 - Generate Melodic Rhythm (use version of ddm from Langston paper)
 		
@@ -70,7 +70,7 @@ namespace Genetics {
 		// For example to get 4 4 with smallest allowed to be 16th notes, we have 16, something, 1 with the subDiv = 16
 		SubdivisionInfo subDivInfo = { static_cast<short>(subDiv), 1.55f, 1 };
 
-		unsigned int maxNotes = phraseLen * subDiv;
+		unsigned int maxNotes = numMeasures * subDiv;
 
 		std::vector<char> phraseRhythm;
 		std::vector<char> measureRhythm;
@@ -78,9 +78,9 @@ namespace Genetics {
 		// Reserve space for the literal worst rhythm to speed up push_back(s)
 		phraseRhythm.reserve(maxNotes);
 
-		for(unsigned i = 0; i < phraseLen; ++i)
+		for(unsigned i = 0; i < numMeasures; ++i)
 		{
-			SubdivisionPattern(measureRhythm, subDivInfo, 0, 0.15f);
+			subdivisionPattern(measureRhythm, subDivInfo, 0, 0.15f);
 
 			for (int j = 0; j < measureRhythm.size(); ++j) {
 			//	std::cout << static_cast<int>(measureRhythm[j]) << ", ";
@@ -117,14 +117,31 @@ namespace Genetics {
 		}
 	}
 
-	void PopulationGenerator::GenerateHarmonic(Phrase* phrase, unsigned phraseLeng, unsigned subDiv)
-	{
-		// 3 - Generate Harmonic Rhythm (based off melodic rhythm, simpler?)
+	void PopulationGenerator::generateHarmonic(Phrase* phrase, unsigned numMeasures, unsigned subDiv) {
 
-		// 3 - Generate Harmonic Pitches (based off melodic pitches or vice versa)
+		// Temp Solution:
+
+		// Hardcoded harmonic progression that only moves every quarter notes
+		// First pass uses a basic I-IV-V-I
+
+		// Determine number of quarter notes so we know how many chords to generate
+		uint32_t numNotes = numMeasures * ChordRhythm;
+
+		phrase->_harmonicNotes = numNotes;
+
+		// Generate initial progression
+		for (uint32_t measure = 0; measure < numMeasures; ++measure) {
+
+			uint32_t idx = ChordRhythm * measure;
+
+			phrase->_harmonicData[idx + 0] = { ChordNumeral::I  }; // Defaults to Major
+			phrase->_harmonicData[idx + 1] = { ChordNumeral::IV };
+			phrase->_harmonicData[idx + 2] = { ChordNumeral::V  };
+			phrase->_harmonicData[idx + 3] = { ChordNumeral::I  };
+		}
 	}
 
-	void PopulationGenerator::SubdivisionPattern(std::vector<char>& pattern, const SubdivisionInfo& info, short layer, float density)
+	void PopulationGenerator::subdivisionPattern(std::vector<char>& pattern, const SubdivisionInfo& info, short layer, float density)
 	{
 		// Calculate a number from 0 to 1
 		std::uniform_int_distribution<int> distrib(0, 100);
@@ -134,8 +151,8 @@ namespace Genetics {
 		// recurse down twice to subdivide the current note
 		if (probability > density && info.length >> layer > info.subDivMin) 
 		{
-			SubdivisionPattern(pattern, info, layer + 1, density * info.layerMod);
-			SubdivisionPattern(pattern, info, layer + 1, density * (info.layerMod + 0.2f));
+			subdivisionPattern(pattern, info, layer + 1, density * info.layerMod);
+			subdivisionPattern(pattern, info, layer + 1, density * (info.layerMod + 0.2f));
 		}
 		else // If we didn't meet the condition to recurse down a layer then just add whatever our current size is
 		{

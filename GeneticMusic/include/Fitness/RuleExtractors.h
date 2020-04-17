@@ -11,6 +11,8 @@
 namespace Genetics {
 
 	struct Phrase;
+
+	// Forward declarations of function 
 	struct Measure;
 
 	class RuleBase;
@@ -18,6 +20,8 @@ namespace Genetics {
 	class RhythmRule;
 	class IntervalRule;
 	class MeasureRule;
+	class ChordRule;
+	class ProgressionRule;
 
 	class Modifier;
 	class Function;
@@ -90,6 +94,35 @@ namespace Genetics {
 		Measure* m_dataBuffer;
 	};
 
+
 	// More extractors here...
+	class ChordExtractor : public ExtractorBase {
+
+	public:
+		ChordExtractor(const RuleList<ChordRule> rules);
+		~ChordExtractor();
+
+		float process(Phrase* subject) const override;
+		uint16_t getNumRules() const override { return m_chordRules.getRuleCount(); }
+
+	private:
+		const RuleList<ChordRule> m_chordRules;
+		uint8_t* m_dataBuffer;
+	};
+
+	/*
+	class ProgressionExtractor : public ExtractorBase {
+
+	public:
+		ProgressionExtractor(ProgressionRule rule);
+		~ProgressionExtractor();
+
+		float process(Phrase* subject) const override;
+		uint16_t getNumRules() const override { return 1; }
+
+	private:
+		
+	}
+	*/
 
 } // namespace Genetics
