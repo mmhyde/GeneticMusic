@@ -95,8 +95,7 @@ namespace Genetics {
 		interface_->m_setIterationCount = AEI::AlgorithmSetter(controller, &GAC::setIterationCount);
 		interface_->m_setPopulationSize = AEI::AlgorithmSetter(controller, &GAC::setPhrasePoolSize);
 
-		interface_->m_setMeasureCount = AEI::AlgorithmSetter(controller, &GAC::setPhraseMeasureCount);
-		interface_->m_setMeasureSmallestNote = AEI::AlgorithmSetter(controller, &GAC::setPhraseSmallestSubdivision);
+		interface_->m_clearPhrasePool = AEI::AlgorithmClear(controller, &GAC::clearPhrasePool);
 
 		interface_->m_runAlgorithm = AEI::AlgorithmExecute(controller, &GAC::run);
 

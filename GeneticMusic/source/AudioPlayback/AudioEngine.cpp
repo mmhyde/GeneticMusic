@@ -38,7 +38,7 @@ namespace Genetics {
 		//std::cout << streamParam.suggestedLatency << std::endl;
 		streamParam.hostApiSpecificStreamInfo = 0;
 
-		Pa_OpenStream(&m_outStream, 0, &streamParam, 44100,
+		Pa_OpenStream(&m_outStream, 0, &streamParam, 48000,
 			256, 0, PACallbackFunc, this);
 		error = Pa_StartStream(m_outStream);
 		if (error)

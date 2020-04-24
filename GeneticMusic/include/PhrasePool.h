@@ -19,24 +19,24 @@ namespace Genetics {
 
 	struct ElitistPrune {
 
-		static void Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children);
+		static void Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children);
 	};
 
 	struct GenerationalPrune {
 		
-		static void Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children);
+		static void Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children);
 	};
 
 	struct TruncationPrune {
 		
-		static void Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children);
+		static void Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children);
 	};
 
 	
 	class PhrasePool{
 
 	public:
-		PhrasePool(PoolAllocator<Phrase>& poolAlloc, unsigned measureCount, unsigned subDivision);
+		PhrasePool(PoolAllocator<Phrase>* poolAlloc, unsigned measureCount, unsigned subDivision);
 		~PhrasePool();
 
 		Phrase* AllocateChild();
@@ -61,7 +61,7 @@ namespace Genetics {
 	private:
 		std::vector<Phrase*> m_population;
 		std::vector<Phrase*> m_childPopulation;
-		PoolAllocator<Phrase>& m_poolAllocator;
+		PoolAllocator<Phrase>* m_poolAllocator;
 
 		const unsigned m_measureCount;
 		const unsigned m_subDivision;

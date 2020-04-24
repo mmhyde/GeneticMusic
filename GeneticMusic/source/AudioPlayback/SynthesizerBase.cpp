@@ -11,7 +11,7 @@ namespace Genetics {
 
 	constexpr float ATTACK_TIME  = 0.01f;
 	constexpr float DECAY_TIME   = 0.05f;
-	constexpr float SUSTAIN_GAIN = 0.60f;
+	constexpr float SUSTAIN_GAIN = 0.70f;
 	constexpr float RELEASE_TIME = 0.05f;
 
 	constexpr float MIDI_A440    = 69.0f;
@@ -39,10 +39,6 @@ namespace Genetics {
 			delete[] m_tempBuffer;
 			m_tempBuffer = nullptr;
 		}
-	}
-
-	void SynthesizerBase::Initialize() {
-	
 	}
 
 	// This function assigns an output array to the outputPtr and returns the number of samples
@@ -120,7 +116,7 @@ namespace Genetics {
 
 		for (uint32_t i = 0; i < sampleIndex; ++i) {
 
-			outputBuffer[i] *= 0.5f;
+			outputBuffer[i] *= 0.85f;
 		}
 
 		*outputPtr = outputBuffer;

@@ -14,16 +14,25 @@
 
 namespace Genetics {
 
-	PopulationGenerator::PopulationGenerator(unsigned populationSize, const PhraseConfig& heuristics)
+	PopulationGenerator::PopulationGenerator(uint32_t populationSize, const PhraseConfig& heuristics)
 		: m_configuration(heuristics), m_populationSize(populationSize), 
-		  m_phraseAllocator((2 * populationSize) + 1)
-	{
+		  m_phraseAllocator(new PoolAllocator<Phrase>(2 * populationSize + 1)) {
+
 		std::random_device rd;
 		m_randomEngine.seed(rd());
 	}
 	
-	PopulationGenerator::~PopulationGenerator()
-	{
+	PopulationGenerator::~PopulationGenerator() {
+	}
+
+	void PopulationGenerator::resetAllocator(uint32_t newSize) {
+		
+		if (newSize != 0) {
+			m_populationSize = newSize;
+		}
+
+		delete m_phraseAllocator;
+		m_phraseAllocator = new PoolAllocator<Phrase>(2 * m_populationSize + 1);
 	}
 
 	unsigned PopulationGenerator::GetPopulationSize() const

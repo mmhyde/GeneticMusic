@@ -110,7 +110,7 @@ namespace Genetics {
 	}
 
 	ChordExtractor::ChordExtractor(const RuleList<ChordRule> rules)
-		: m_chordRules(rules), m_dataBuffer(new uint8_t[Phrase::_numMeasures * ChordRhythm]) {
+		: m_chordRules(rules), m_dataBuffer(new uint8_t[Phrase::_numMeasures * Phrase::_smallestSubdivision]) {
 	}
 
 	ChordExtractor::~ChordExtractor() {
@@ -121,29 +121,30 @@ namespace Genetics {
 	float ChordExtractor::process(Phrase* subject) const {
 
 		float total = 0.0f;
-		std::memset(m_dataBuffer, 0, sizeof(uint8_t) * Phrase::_numMeasures * ChordRhythm);
+		std::memset(m_dataBuffer, 0, sizeof(uint8_t) * Phrase::_numMeasures * Phrase::_smallestSubdivision);
 
-		uint32_t noteIdx = 0; uint8_t previousPitch = 0;
-		for (uint32_t intervalIdx = 0; intervalIdx < subject->_harmonicNotes; ++intervalIdx) {
-			
-			// Get the pitch of the next quarter note
+		uint32_t noteIdx = 0;
+
+		uint8_t previousPitch = 0, currentRoot = 0;
+		for (uint32_t outputIdx = 0; outputIdx < subject->_melodicNotes; ++outputIdx) {
+
+			// Get the pitch of the next note
 			uint8_t pitch = subject->_melodicData[noteIdx];
 
-			// If pitch is 0 there's no note here, look at the previous quarter note
+			// If the pitch is zero use the previous one
 			if (pitch == 0) { pitch = previousPitch; }
 
-			// Get the current chord at the intervalIdx
-			const Chord& currentChord = subject->_harmonicData[intervalIdx];
+			// Get the current root note
+			if (noteIdx % 4 == 0) {
+				const Chord& currentChord = subject->_harmonicData[noteIdx / ChordRhythm];
+				currentRoot = calculateRootNote(pitch, currentChord);
+			}
 
-			// Determine root note of the chord
-			uint8_t rootNote = calculateRootNote(pitch, currentChord);
-
-			// Determine interval between pitch and root
-			m_dataBuffer[intervalIdx] = pitch - rootNote;
-
-			// Shift over by a quarter note in the notes array
-			noteIdx += ChordRhythm;
-			previousPitch = pitch;
+			// Determine interval between the root and current pitch
+			m_dataBuffer[outputIdx] = pitch - currentRoot;
+			
+			// Determine index shift amounts
+			noteIdx += subject->_melodicRhythm[noteIdx];
 		}
 
 		return m_chordRules.evaluateAll(m_dataBuffer, subject->_harmonicNotes);

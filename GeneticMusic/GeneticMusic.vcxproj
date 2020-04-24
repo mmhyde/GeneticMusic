@@ -179,6 +179,9 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClInclude Include="include\AudioPlayback\ActiveSound.h" />
     <ClInclude Include="include\AudioPlayback\AudioDefinitions.h" />
     <ClInclude Include="include\AudioPlayback\AudioEngine.h" />
+    <ClInclude Include="include\AudioPlayback\FileDefinitions.h" />
+    <ClInclude Include="include\AudioPlayback\Int24.h" />
+    <ClInclude Include="include\AudioPlayback\PianoSynth.h" />
     <ClInclude Include="include\AudioPlayback\SynthesizerBase.h" />
     <ClInclude Include="include\Breeding\Breeder.h" />
     <ClInclude Include="include\ChordDefinitions.h" />
@@ -241,6 +244,8 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClCompile Include="source\AudioPlayback\ActiveSound.cpp" />
     <ClCompile Include="source\AudioPlayback\AudioDefinitions.cpp" />
     <ClCompile Include="source\AudioPlayback\AudioEngine.cpp" />
+    <ClCompile Include="source\AudioPlayback\Int24.cpp" />
+    <ClCompile Include="source\AudioPlayback\PianoSynth.cpp" />
     <ClCompile Include="source\AudioPlayback\SynthesizerBase.cpp" />
     <ClCompile Include="source\Breeding\Breeder.cpp" />
     <ClCompile Include="source\FIleIO\FileManager.cpp" />
@@ -261,6 +266,7 @@ xcopy /y $(SolutionDir)external\lib\glfw3.dll $(SolutionDir)Standalone\</Command
     <ClCompile Include="source\Graphics\PhrasePlaybackWindow.cpp" />
     <ClCompile Include="source\Graphics\PianoRoll.cpp" />
     <ClCompile Include="source\Graphics\RuleEditor.cpp" />
+    <ClCompile Include="source\Graphics\UIColors.cpp" />
     <ClCompile Include="source\Graphics\UIElementBuilder.cpp" />
     <ClCompile Include="source\Graphics\UISystem.cpp" />
     <ClCompile Include="source\main.cpp" />

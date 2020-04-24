@@ -2,6 +2,7 @@
 
 #include "Graphics/AlgorithmExecutionWindow.h"
 #include "GAControllerInterfaces.h"
+#include "GADefaultConfig.h"
 
 #include "imgui/imgui.h"
 
@@ -65,7 +66,7 @@ namespace Genetics {
 		ImGui::PushItemWidth(buttonDim.x);
 
 		// Integer input for number of generations
-		static int numGenerations = 10;
+		static int numGenerations = DefaultGenCount;
 		ImGui::Text("Generation Count");
 		ImGui::Separator();
 		if (ImGui::InputInt("##G", &numGenerations, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
@@ -73,24 +74,19 @@ namespace Genetics {
 			m_interface->m_setIterationCount(static_cast<uint32_t>(numGenerations));
 		}
 
-		// Integer input for number of measures
-		static int numMeasures = 4;
-		ImGui::Text("Phrase length");
+		static int populationSize = DefaultPopulationSize;
+		ImGui::Text("Population Size");
 		ImGui::Separator();
-		if (ImGui::InputInt("##P", &numMeasures, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
+		if (ImGui::InputInt("##P", &populationSize, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue)) {
 
-			m_interface->m_setMeasureCount(static_cast<uint32_t>(numMeasures));
+			m_interface->m_setPopulationSize(static_cast<uint32_t>(populationSize));
 		}
-		
-		// Combo box for smallest subdivion (1, 2, 4, 8, 16)
-		static int smallestSubdivIndex = enm_sixteenth;
 
-		
-		int originalVal = smallestSubdivIndex;
-		renderDropDown(smallestSubdivIndex, "Smallest Subdivision");
+		ImGui::NewLine();
 
-		if (originalVal != smallestSubdivIndex) {
-			m_interface->m_setMeasureSmallestNote(ValidSubdivisions[smallestSubdivIndex]);
+		if (ImGui::Button("Reset Population", buttonDim)) {
+
+			m_interface->m_clearPhrasePool();
 		}
 
 		ImGui::PopItemWidth();

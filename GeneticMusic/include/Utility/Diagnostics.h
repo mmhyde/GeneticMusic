@@ -19,4 +19,6 @@ namespace Genetics {
 
 	GA_Error validateNoteLengths(Phrase* phrase);
 
+	GA_Error validateRestOccurances(Phrase* phrase);
+
 } // namespace Genetics

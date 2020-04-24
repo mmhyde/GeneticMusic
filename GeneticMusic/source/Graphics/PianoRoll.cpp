@@ -1,12 +1,39 @@
 // Morgen Hyde
 #include "Graphics/PianoRoll.h"
 #include "imgui/imgui.h"
+
 #include "Graphics/ImGuiHelpers.h"
+
 
 #include "Phrase.h"
 #include "GAControllerInterfaces.h"
 
 #include <iostream>
+
+
+extern ImU32 whiteKey;
+extern ImU32 blackKey;
+extern ImU32 keyBorder;
+
+extern ImU32 blackBackground;
+extern ImU32 background;
+extern ImU32 gridLines;
+
+extern ImU32 timelineBackground;
+extern ImU32 timelineColor;
+extern ImU32 timelineNotchText;
+
+extern ImU32 noteColor;
+extern ImU32 chordColor;
+extern ImU32 noteBorderColor;
+extern ImU32 noteLineColor;
+
+extern ImU32 ScrollBackground;
+extern ImU32 ScrollTrough;
+extern ImU32 ScrollBar;
+
+// Editor Colors
+
 
 namespace Genetics {
 
@@ -50,10 +77,6 @@ namespace Genetics {
 		drawList->ChannelsMerge();
 	}
 
-	constexpr ImU32 whiteKey  = IM_COL32_WHITE;
-	constexpr ImU32 blackKey  = IM_COL32_BLACK;
-	constexpr ImU32 keyBorder = IM_COL32(120, 120, 120, 255);
-
 	constexpr float dividerLine = 0.01f;
 
 	const float keyDensity           = 24.0f; // Number of keys per screen
@@ -88,7 +111,7 @@ namespace Genetics {
 		ImVec2 MinCorner = { m_xPos, m_yPos + scrollingOffset };
 		float height     = m_keyHeight;
 		float width      = m_keyWidth;
-		ImColor keyColor = whiteKey;
+		ImU32 keyColor   = whiteKey;
 
 		drawList->ChannelsSetCurrent(e_midBackground); // Set to channel 0 for white key, background element
 		if (!m_isWhiteKey) {
@@ -171,18 +194,9 @@ namespace Genetics {
 		}
 	}
 
-	constexpr ImU32 blackBackground = IM_COL32(57 ,  57,  70, 255);
-	constexpr ImU32 background		= IM_COL32(98, 98, 119, 255);
-	constexpr ImU32 gridLines		= IM_COL32(17,  28,  110, 255);
-
-	constexpr ImU32 timelineBackground = IM_COL32(71, 71, 107, 255);
-	constexpr ImU32 timelineColor	   = IM_COL32(255, 140, 26, 255);
-	constexpr ImU32 timelineNotchText  = IM_COL32_BLACK;
-
 	const float lineThickness	 = 2.0f;
 	const float timelineRatio	 = 0.05f;
 	
-
 	void PianoRoll::DrawTimelineGrid() {
 
 		constexpr unsigned numKeys = sizeof(m_keyArray) / sizeof(Key);
@@ -310,9 +324,6 @@ namespace Genetics {
 		drawList->AddRectFilled(rightCoverMin, rightCoverMax, timelineBackground);
 	}
 
-	ImU32 noteColor  = IM_COL32(255, 100, 100, 255);
-	ImU32 chordColor = IM_COL32(100, 149, 237, 255);
-
 	void PianoRoll::DrawPhraseOnGrid() {
 
 		Phrase* activePhrase = m_interface->m_getActivePhrase();
@@ -383,10 +394,6 @@ namespace Genetics {
 	}
 
 	constexpr int numWhiteKeys = 75; // 0-119 has 70 white keys (7 per octave, plus 5 between 120-127)
-
-	constexpr ImU32 ScrollBackground = IM_COL32(80 ,  93,  98, 255);
-	constexpr ImU32 ScrollTrough	 = IM_COL32(103, 120, 126, 255); 
-	constexpr ImU32 ScrollBar		 = IM_COL32(173,  45,   0, 255);
 
 	constexpr float ScrollInternal = 5.0f;
 
@@ -533,7 +540,7 @@ namespace Genetics {
 	}
 
 	void PianoRoll::renderNote(const short numBoxes, const float xCoordinate, 
-							   const uint8_t pitch, const ImU32 barColor = IM_COL32_BLACK) const {
+							   const uint8_t pitch, const ImU32 barColor = noteBorderColor) const {
 
 		ImDrawList* drawList = ImGui::GetWindowDrawList();
 
@@ -546,11 +553,11 @@ namespace Genetics {
 		ImVec2 noteCorner = { xCoordinate + m_scrollingX, GetYCoordOfKey(pitch) + m_scrollingY };
 
 		drawList->AddRectFilled(noteCorner, noteCorner + noteDim, barColor, 2.5f);
-		drawList->AddRect(noteCorner, noteCorner + noteDim, IM_COL32_BLACK, 2.5f, 15, 1.5f);
+		drawList->AddRect(noteCorner, noteCorner + noteDim, noteBorderColor, 2.5f, 15, 1.5f);
 
 		ImVec2 lineTop = { noteCorner.x + lineIndent, noteCorner.y + (noteHeight - lineHeight) / 2.0f };
 		ImVec2 lineBottom = { lineTop.x, lineTop.y + lineHeight };
-		drawList->AddLine(lineTop, lineBottom, IM_COL32_WHITE, 2.0f);
+		drawList->AddLine(lineTop, lineBottom, noteLineColor, 2.0f);
 	}
 
 } // namespace Genetics

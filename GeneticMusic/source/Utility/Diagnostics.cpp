@@ -13,6 +13,7 @@ namespace Genetics {
 		enm_noteCountMismatch,
 		enm_noteLengthTooShort,
 		enm_noteLengthTooLong,
+		enm_restFound,
 	};
 
 	std::string readErrorMessage(GA_Error errorCode) {
@@ -32,6 +33,9 @@ namespace Genetics {
 
 		case enm_noteLengthTooLong:
 			return "Found a note before one was expected to occur (Overlapping notes)";
+
+		case enm_restFound:
+			return "Found a rest note where one wasn't expected";
 
 		default:
 			return "Unrecognized error code";
@@ -107,5 +111,21 @@ namespace Genetics {
 		return enm_noError;
 	}
 
+	GA_Error validateRestOccurances(Phrase* phrase) {
+
+		uint32_t arrayLen = Phrase::_numMeasures * Phrase::_smallestSubdivision;
+		
+		for (uint32_t i = 0; i < arrayLen; ++i) {
+
+			// If the current pitch is a zero the current rhythm value should 
+			// also be zero or there's an error
+			if (phrase->_melodicData[i] == 0 && phrase->_melodicRhythm[i] != 0) {
+
+				return enm_restFound;
+			}
+		}
+
+		return enm_noError;
+	}
 
 } // namespace Genetics

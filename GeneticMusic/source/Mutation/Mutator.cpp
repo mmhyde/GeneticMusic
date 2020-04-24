@@ -25,18 +25,20 @@ namespace Genetics {
 
 	void Mutator::InitMutationPool()
 	{
-		//ADD_MUTATION(30, NullOperator);
+		// No Op
+		ADD_MUTATION(30, NullOperator);
+
+		// Rhythm mutators
 		ADD_MUTATION(15, Subdivide);
 		ADD_MUTATION(15, Merge);
-		//ADD_MUTATION(10, Rest);
-		//ADD_MUTATION(10, NullOperator);
-		ADD_MUTATION(25, Rotate);
+
+		// Pitch Mutators
+		ADD_MUTATION(20, Rotate);
 		ADD_MUTATION(20, Transpose);
 		ADD_MUTATION(20, SortAscending);
 		ADD_MUTATION(20, SortDescending);
-		//ADD_MUTATION(25, Retrograde);
-		//ADD_MUTATION(25, Inversion);
-		//ADD_MUTATION(25, Retrograde);
+		ADD_MUTATION(20, Inversion);
+		ADD_MUTATION(20, Retrograde);
 
 		m_numMutations = static_cast<unsigned>(m_mutationWeights.size());
 	}
@@ -51,15 +53,20 @@ namespace Genetics {
 		std::uniform_int_distribution<int> distrib(0, weightSum);
 		short choice = distrib(m_randomEngine);
 
-		unsigned index = 0;
-		for (; index < m_numMutations; ++index) {
-			choice -= m_mutationWeights[index];
-			if (choice <= 0) {
-				break;
+		for (uint16_t measure = 0; measure < Phrase::_numMeasures; ++measure) {
+
+			unsigned index = 0;
+			for (; index < m_numMutations; ++index) {
+				choice -= m_mutationWeights[index];
+				if (choice <= 0) {
+					break;
+				}
 			}
+
+			(this->*(m_mutationPool[index]))(phrase);
 		}
 
-		(this->*(m_mutationPool[index]))(phrase);
+
 	}
 
 

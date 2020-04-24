@@ -30,8 +30,6 @@ namespace Genetics {
 		SynthesizerBase(unsigned sampleRate, const MeterInfo& meterData);
 		virtual ~SynthesizerBase();
 
-		void Initialize();
-
 		// This function assigns an output array to the outputPtr and returns the number of samples
 		virtual uint32_t renderMIDI(float** outputPtr, const Phrase* noteList);
 
@@ -61,6 +59,7 @@ namespace Genetics {
 
 		Envelope m_envelopeArchetype;
 		SineVoice m_outputSynth;
+
 		float* m_tempBuffer;
 
 		const unsigned m_sampleRate;

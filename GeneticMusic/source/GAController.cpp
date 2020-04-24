@@ -3,6 +3,7 @@
 #include "GADefaultConfig.h"
 
 #include "AudioPlayback/SynthesizerBase.h"
+#include "AudioPlayback/PianoSynth.h"
 #include "FIleIO/MIDIFiles.h"
 
 
@@ -15,18 +16,17 @@ namespace Genetics {
 	GeneticAlgorithmController::GeneticAlgorithmController()
 		: m_populationGen(DefaultPopulationSize, { DefaultMeasureCount, DefaultSubdivision }),
 		  m_phrasePool(nullptr), m_activePhrase(nullptr), m_iterationsPerStep(DefaultGenCount),
-		  m_totalGenerations(0), m_activeSynth(nullptr), 
+		  m_totalGenerations(0), m_activeSynth(nullptr), m_populationSize(DefaultPopulationSize),
 		  m_fitness() {
 
 		m_phrasePool = m_populationGen.GeneratePopulation();
 		m_activePhrase = m_phrasePool->GetPhrases().front();
 
-		m_activeSynth = new SynthesizerBase(44100, DefaultMeter);
+		//m_activeSynth = new SynthesizerBase(48000, DefaultMeter);
+		m_activeSynth = new PianoSynth(48000, DefaultMeter);
 	}
 
 	GeneticAlgorithmController::~GeneticAlgorithmController() {
-
-
 	}
 
 	void GeneticAlgorithmController::initializeAlgorithm() {
@@ -48,25 +48,28 @@ namespace Genetics {
 			while (m_phrasePool->GetNumChildren() < maxPopulation) {
 
 #ifdef _DEBUG
-				//std::cout << "Starting selection step..." << std::endl;
+				std::cout << "Starting selection step..." << std::endl;
 #endif
 				// Select a new set of parents
 				BreedingPair selected = m_selection.SelectPair(m_phrasePool);
 
 #ifdef _DEBUG
-				//std::cout << "Starting breeding step..." << std::endl;
+				std::cout << "Starting breeding step..." << std::endl;
 #endif
 				// Breed the phrases together and produce an output (auto added as child in pool)
 				m_breeding.Breed(selected, m_phrasePool);
 
 #ifdef _DEBUG
 				GA_Error errorCode = validateNoteCount(m_phrasePool->GetChildren().back());
-				//printErrorMessage(errorCode);
+				printErrorMessage(errorCode);
 
 				errorCode = validateNoteLengths(m_phrasePool->GetChildren().back());
-				//printErrorMessage(errorCode);
+				printErrorMessage(errorCode);
 
-				//std::cout << "Starting mutation step..." << std::endl;
+				errorCode = validateRestOccurances(m_phrasePool->GetChildren().back());
+				printErrorMessage(errorCode);
+
+				std::cout << "Starting mutation step..." << std::endl;
 #endif
 				// Apply a mutation to the child to introduce some variety
 				m_mutation.Mutate(m_phrasePool->GetChildren().back());
@@ -78,7 +81,7 @@ namespace Genetics {
 				errorCode = validateNoteLengths(m_phrasePool->GetChildren().back());
 				printErrorMessage(errorCode);
 
-				//std::cout << "Starting assessment step..." << std::endl;
+				std::cout << "Starting assessment step..." << std::endl;
 #endif 
 				// Evaluate the fitness of the new phrase
 				m_fitness.Assess(m_phrasePool->GetChildren().back());
@@ -113,14 +116,7 @@ namespace Genetics {
 
 	void GeneticAlgorithmController::setPhrasePoolSize(uint32_t populationSize) {
 
-	}
-
-	void GeneticAlgorithmController::setPhraseMeasureCount(uint32_t measureCount) {
-
-	}
-
-	void GeneticAlgorithmController::setPhraseSmallestSubdivision(uint32_t subDivision) {
-
+		m_populationSize = populationSize;
 	}
 
 
@@ -129,6 +125,33 @@ namespace Genetics {
 		m_iterationsPerStep = iterations;
 	}
 
+	void GeneticAlgorithmController::clearPhrasePool() {
+
+		// Delete the current phrase pool
+		delete m_phrasePool;
+		Phrase::_phraseCount = 0; // Start ID stack at 0 again
+
+		// Reset the allocator for the population
+		m_populationGen.resetAllocator(m_populationSize);
+
+		// Regenerate a new base population
+		m_phrasePool = m_populationGen.GeneratePopulation();
+
+#ifdef _DEBUG
+		const std::vector<Phrase*>& phraseVec = m_phrasePool->GetPhrases();
+		for (Phrase* currPhrase : phraseVec) {
+
+			GA_Error errorCode = validateRestOccurances(currPhrase);
+			printErrorMessage(errorCode);
+		}
+#endif
+
+		// Rescore the fresh pool for a starting point
+		m_fitness.Assess(m_phrasePool);
+
+		// Set active to the current front of the phrase list
+		m_activePhrase = m_phrasePool->GetPhrases()[0];
+	}
 
 	void GeneticAlgorithmController::setActivePhrase(uint32_t phraseID) {
 
@@ -204,10 +227,6 @@ namespace Genetics {
 		}
 
 		m_activeSynth = synth;
-	}
-
-	void GeneticAlgorithmController::resetPopulation() {
-
 	}
 
 

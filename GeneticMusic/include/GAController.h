@@ -34,9 +34,7 @@ namespace Genetics {
 		void setMeterInfoStruct(const MeterInfo& meterData);
 		void setPhrasePoolSize(uint32_t populationSize);
 		
-		void setPhraseMeasureCount(uint32_t measureCount);
-		void setPhraseSmallestSubdivision(uint32_t subDivision);
-
+		void clearPhrasePool();
 		void setIterationCount(uint32_t iterations);
 
 		// Phrase Manipulation Functions //
@@ -60,7 +58,6 @@ namespace Genetics {
 		void setPlaybackSynthesizer(SynthesizerBase* synth);
 
 	private:
-		void resetPopulation();
 
 		// Phrase and population
 		PopulationGenerator m_populationGen;
@@ -69,6 +66,7 @@ namespace Genetics {
 
 		int16_t m_iterationsPerStep;
 		uint32_t m_totalGenerations;
+		uint32_t m_populationSize;
 
 		// Audio playback
 		SynthesizerBase* m_activeSynth;

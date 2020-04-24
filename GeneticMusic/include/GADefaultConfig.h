@@ -12,7 +12,7 @@ namespace Genetics {
 		int smallestSubdivision;
 	};
 
-	constexpr uint16_t DefaultPopulationSize = 20;
+	constexpr uint16_t DefaultPopulationSize = 24;
 	constexpr uint16_t DefaultMeasureCount = 4;
 	constexpr uint16_t DefaultSubdivision = 16;
 

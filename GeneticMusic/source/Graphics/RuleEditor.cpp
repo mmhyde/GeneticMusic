@@ -18,6 +18,13 @@
 #define SECOND_VERT 1
 #define HASH_VERTEX(vertexAddr) (static_cast<uint64_t>(vertexAddr));
 
+extern ImU32 backgroundColor;
+extern ImU32 axisColor;
+extern ImU32 gridLineColor;
+extern ImU32 vertexColor;
+extern ImU32 segmentColor;
+
+extern ImU32 graphLabelColor;
 
 namespace Genetics {
 
@@ -477,12 +484,6 @@ namespace Genetics {
 		}
 	}
 
-	const ImColor backgroundColor(32, 32, 32);
-	const ImColor axisColor(204, 204, 204);
-	const ImColor gridLineColor(76, 76, 76);
-	const ImColor vertexColor(200, 200, 0);
-	const ImColor segmentColor(76, 0, 153);
-
 	const ImVec2 gridWindowPadding(40.0f, 40.0f);
 
 	constexpr float scrollingScalar = 0.5f;
@@ -638,7 +639,7 @@ namespace Genetics {
 			axisLabel << std::fixed << std::setprecision(1) << yCoord;
 
 			// On each line draw text to display the corresponding values
-			drawList->AddText(ImVec2(m_yTextPos, initY), IM_COL32_WHITE, axisLabel.str().c_str());
+			drawList->AddText(ImVec2(m_yTextPos, initY), graphLabelColor, axisLabel.str().c_str());
 
 			// Decrement counter variable for y text (moving down screen)
 			yCoord -= intervalY;
@@ -666,7 +667,7 @@ namespace Genetics {
 			axisLabel << xCoord;
 
 			// On each line draw text to display corresponding values
-			drawList->AddText(ImVec2(xPos, maxY + ImGui::GetTextLineHeight()), IM_COL32_WHITE, axisLabel.str().c_str());
+			drawList->AddText(ImVec2(xPos, maxY + ImGui::GetTextLineHeight()), graphLabelColor, axisLabel.str().c_str());
 
 			// Increment counter variable for x text
 			xCoord += intervalX;
@@ -693,20 +694,25 @@ namespace Genetics {
 		switch (type) {
 
 		case ext_Pitch:
-			drawList->AddText(center, IM_COL32_WHITE, "Pitch (MIDI note #)");
+			drawList->AddText(center, graphLabelColor, "Pitch (MIDI note #)");
 			break;
 
 		case ext_Rhythm:
-			drawList->AddText(center, IM_COL32_WHITE, "Rhythm (In 16th notes)");
+			drawList->AddText(center, graphLabelColor, "Rhythm (In 16th notes)");
 			break;
 
 		case ext_Interval:
-			drawList->AddText(center, IM_COL32_WHITE, "Interval (Semitones)");
+			drawList->AddText(center, graphLabelColor, "Interval (Semitones)");
 			break;
 
 		case ext_Measure:
-			drawList->AddText(center, IM_COL32_WHITE, "Rhythm (1 - 16) and Pitch (21 - 108)");
+			drawList->AddText(center, graphLabelColor, "Rhythm (1 - 16) and Pitch (21 - 108)");
 			break;
+
+		case ext_Chord:
+			drawList->AddText(center, graphLabelColor, "Interval between root and pitch (semitones)");
+			break;
+
 		// Other rule types...
 		}
 

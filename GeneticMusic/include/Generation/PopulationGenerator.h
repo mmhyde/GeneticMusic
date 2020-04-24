@@ -18,6 +18,8 @@ namespace Genetics {
 		PopulationGenerator(unsigned populationSize, const PhraseConfig& configuration);
 		~PopulationGenerator();
 
+		void resetAllocator(uint32_t newSize = 0);
+
 		unsigned GetPopulationSize() const;
 		PhrasePool* GeneratePopulation();
 	
@@ -38,7 +40,7 @@ namespace Genetics {
 		PhraseConfig m_configuration;
 		unsigned m_populationSize;
 
-		PoolAllocator<Phrase> m_phraseAllocator;
+		PoolAllocator<Phrase>* m_phraseAllocator;
 		std::mt19937 m_randomEngine;
 	};
 

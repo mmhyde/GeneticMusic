@@ -110,12 +110,12 @@ namespace Genetics {
 
 		typedef Functor<void, uint32_t> AlgorithmSetter;
 		typedef Functor<void> AlgorithmExecute;
+		typedef Functor<void> AlgorithmClear;
 
 		AlgorithmSetter m_setIterationCount;
 		AlgorithmSetter m_setPopulationSize;
 
-		AlgorithmSetter m_setMeasureCount;
-		AlgorithmSetter m_setMeasureSmallestNote;
+		AlgorithmClear m_clearPhrasePool;
 
 		AlgorithmExecute m_runAlgorithm;
 	};

@@ -17,25 +17,25 @@ namespace Genetics {
 	unsigned Phrase::_numMeasures         = 0;
 	unsigned Phrase::_smallestSubdivision = 0;
 
-	PhrasePool::PhrasePool(PoolAllocator<Phrase>& poolAlloc, unsigned measureCount, unsigned subDivision)
+	PhrasePool::PhrasePool(PoolAllocator<Phrase>* poolAlloc, unsigned measureCount, unsigned subDivision)
 		: m_poolAllocator(poolAlloc), m_measureCount(measureCount), m_subDivision(subDivision) {
 
-		m_population.reserve(poolAlloc.capacity() - 1);
+		m_population.reserve(poolAlloc->capacity() - 1);
 	}
 
 	PhrasePool::~PhrasePool() {
 
 		for (Phrase* iter : m_population) {
-			m_poolAllocator.free(iter);
+			m_poolAllocator->free(iter);
 		}
 		for (Phrase* iter : m_childPopulation) {
-			m_poolAllocator.free(iter);
+			m_poolAllocator->free(iter);
 		}
 	}
 
 	Phrase* PhrasePool::AllocateChild() {
 
-		Phrase* newPhrase = m_poolAllocator.alloc();
+		Phrase* newPhrase = m_poolAllocator->alloc();
 		if (newPhrase) {
 
 			// Allocate space for a note every 16th to make later operations easier
@@ -84,7 +84,10 @@ namespace Genetics {
 	}
 
 	// Elitist Uses the best parents and their children first
-	void ElitistPrune::Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children) {
+	void ElitistPrune::Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children) {
+
+		// Store the population size
+		uint32_t populationSize = static_cast<uint32_t>(parents.size());
 
 		// Add all the children to the parent vector and sort it in order of decreasing fitness values
 		parents.insert(parents.end(), children.begin(), children.end());
@@ -92,21 +95,22 @@ namespace Genetics {
 
 		children.clear();
 
-		while (parents.size() > DefaultPopulationSize) {
+		// Remove elements till we're back at the correct size
+		while (parents.size() > populationSize) {
 
-			poolAlloc.free(parents.back());
+			poolAlloc->free(parents.back());
 			parents.pop_back();
 		}
 
 	}
 
 	// Generational is a complete replacement of parents with children
-	void GenerationalPrune::Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children) {
+	void GenerationalPrune::Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children) {
 
 		// Free all the parents in the parent vector
 		for (Phrase* parent : parents) {
 
-			poolAlloc.free(parent);
+			poolAlloc->free(parent);
 		}
 
 		// Clear the vector
@@ -123,7 +127,7 @@ namespace Genetics {
 	}
 
 	// Truncation just uses the best N members of the population regardless of child or parent status
-	void TruncationPrune::Merge(PoolAllocator<Phrase>& poolAlloc, PhraseVec& parents, PhraseVec& children) {
+	void TruncationPrune::Merge(PoolAllocator<Phrase>* poolAlloc, PhraseVec& parents, PhraseVec& children) {
 
 
 	}

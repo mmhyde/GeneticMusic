@@ -12,8 +12,6 @@ namespace Genetics {
 	struct Phrase;
 	struct PianoRollInterface;
 
-	typedef unsigned int ImU32;
-
 	class PianoRoll : public UIElement {
 
 	public:
@@ -29,7 +27,7 @@ namespace Genetics {
 		void DrawPhraseOnGrid();
 		void DrawScrollBars();
 
-		void renderNote(const short numBoxes, const float xCoord, const uint8_t pitch, const ImU32 barColor) const;
+		void renderNote(const short numBoxes, const float xCoord, const uint8_t pitch, const uint32_t barColor) const;
 		float GetYCoordOfKey(short keyNumber) const;
 
 		struct Key {

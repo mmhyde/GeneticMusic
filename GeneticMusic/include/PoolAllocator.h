@@ -117,7 +117,7 @@ namespace Genetics {
 	template <typename T>
 	void PoolAllocator<T>::clear() {
 
-		std::memset(m_objectArray, 0, sizeof(T) * m_objectArray);
+		std::memset(m_objectArray, 0, sizeof(T) * m_maxObjects);
 		buildPool();
 		m_numObjects = 0;
 	}

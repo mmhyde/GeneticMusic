@@ -22,10 +22,9 @@ namespace Genetics {
 		void shutdown();
 
 		void startFrame();
+		void endFrame();
 
 		void render();
-
-		void endFrame();
 
 		void addUIElement(UIElement* newElement) {
 			m_elements.push_back(newElement);
@@ -36,6 +35,9 @@ namespace Genetics {
 		}
 
 	private:
+		void pushAllStyleColors();
+		void  popAllStyleColors();
+		void renderUIColorPicker();
 
 		std::vector<UIElement*> m_elements;
 
