@@ -34,8 +34,13 @@ namespace Genetics {
 
 	const unsigned int CHUNK_HEADER_SIZE = 8;
 
+#pragma warning(push)
+#pragma warning(disable : 4307)
+
 	const float MAX_16 = float((1 << 15) - 1);
 	const float MAX_32 = float((1 << 31) - 1);
+
+#pragma warning(pop)
 
 	const RIFFChunk expectedRiff = { {'R','I','F','F'}, 0, {'W','A','V','E'} };
 	const fmt_Chunk expectedFmt  = { {'f','m','t',' '} };

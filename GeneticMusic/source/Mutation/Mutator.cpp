@@ -53,7 +53,7 @@ namespace Genetics {
 		std::uniform_int_distribution<int> distrib(0, weightSum);
 		short choice = distrib(m_randomEngine);
 
-		for (uint16_t measure = 0; measure < Phrase::_numMeasures; ++measure) {
+		//for (uint16_t measure = 0; measure < Phrase::_numMeasures; ++measure) {
 
 			unsigned index = 0;
 			for (; index < m_numMutations; ++index) {
@@ -64,7 +64,7 @@ namespace Genetics {
 			}
 
 			(this->*(m_mutationPool[index]))(phrase);
-		}
+		//}
 
 
 	}

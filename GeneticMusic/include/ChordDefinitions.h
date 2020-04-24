@@ -48,14 +48,17 @@ namespace Genetics {
 
 		// Shift root to be within an octave lower than the current pitch
 		// Interval (pitch - root) should be: [11, 0]
+		uint8_t refPitch = pitch;
+
+		if (pitch < 12) { refPitch += 12; }
 
 		// Shifting root down
-		while (pitch < rootNote) {
+		while (refPitch < rootNote) {
 			rootNote -= OctaveInterval;
 		}
 
 		// Shifting root up
-		while (pitch - OctaveInterval >= rootNote) {
+		while (refPitch - OctaveInterval >= rootNote) {
 			rootNote += OctaveInterval;
 		}
 

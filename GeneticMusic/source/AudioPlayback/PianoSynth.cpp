@@ -258,7 +258,7 @@ namespace Genetics {
 
 				data = new float[numSamples / 2];
 
-				float halfPower = std::sin(PI / 4.0);
+				float halfPower = static_cast<float>(std::sin(PI / 4.0));
 
 				for (int i = 0; i < numSamples / 2; ++i) {
 
@@ -310,7 +310,7 @@ namespace Genetics {
 		float frequency = 440.0f * static_cast<float>(std::pow(2.0, exponent));
 
 		// If notes are outside range of the sample lib don't play anything
-		if (pitch < 21 | pitch > 108) { return; }
+		if (pitch < 21 || pitch > 108) { return; }
 
 		m_sampleTable[pitch - 21].generateSamples(m_tempBuffer, numSamples);
 
